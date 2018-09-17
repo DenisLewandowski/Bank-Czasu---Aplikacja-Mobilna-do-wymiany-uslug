@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "167213368025",
+    "firebase_url": "https://bank-czasu.firebaseio.com",
+    "project_id": "bank-czasu",
+    "storage_bucket": "bank-czasu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167213368025:android:3a4713ee23c2d7ac",
+        "android_client_info": {
+          "package_name": "com.example.denis.bankczasu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167213368025-b73egg3quvamb3lhqv1tdbaur6r09i6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.denis.bankczasu",
+            "certificate_hash": "7a41f7fc99730ceb162b8d02b1040c1b11e1ed67"
+          }
+        },
+        {
+          "client_id": "167213368025-8h744bkgfciohrsnvpr01f0h6ninmkdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI2cML4itzLQUg25EfMJupyxjNScg84vo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167213368025-8h744bkgfciohrsnvpr01f0h6ninmkdf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
