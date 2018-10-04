@@ -1,4 +1,3 @@
 <resources>
-    <string name="default_web_client_id" translatable="false">167213368025-8h744bkgfciohrsnvpr01f0h6ninmkdf.apps.googleusercontent.com</string>
-
+    <string name="app_name">Bank Czasu</string>
 </resources>
