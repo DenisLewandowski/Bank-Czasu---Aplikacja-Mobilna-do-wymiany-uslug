@@ -3,16 +3,158 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/oceanBlue"
     tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_logo" />
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="#FFF"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_name"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="55dp"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:drawableStart="@drawable/ic_email_white"
+            android:drawablePadding="12dp"
+            android:hint="Email..."
+            android:inputType="textEmailAddress"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#FFF" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emailEditText"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent"
+            android:drawableStart="@drawable/ic_password_white"
+            android:drawablePadding="12dp"
+            android:hint="Hasło..."
+            android:inputType="textPassword"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#FFF" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/loginLayout"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="24dp"
+        android:background="#FFF"
+        android:shadowColor="#888"
+        android:text="@string/sign_in"
+        android:textColor="#606060" />
+
+    <RelativeLayout
+        android:id="@+id/orLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/signInButton">
+
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@id/orTextView"
+            android:background="#FFF" />
+
+        <TextView
+            android:id="@+id/orTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/or"
+            android:textColor="#FFF" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/orTextView"
+            android:background="#FFF" />
+
+    </RelativeLayout>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleSignInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/orLayout"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:paddingEnd="@dimen/singUpPadding"
-        android:paddingStart="@dimen/singUpPadding" />
+        android:layout_marginStart="@dimen/singUpPadding"
+        android:layout_marginEnd="@dimen/singUpPadding"
+        android:layout_marginBottom="50dp" />
 
+    <TextView
+        android:id="@+id/signUpTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="?selectableItemBackground"
+        android:layout_margin="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/sign_up"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:textSize="16sp" />
 
 </RelativeLayout>

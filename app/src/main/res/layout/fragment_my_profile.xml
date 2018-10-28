@@ -1,14 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MyProfileFragment">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profil"
-        android:gravity="center"/>
+        android:layout_height="80dp"
+        android:background="@color/oceanBlue">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/userLoginTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:text="null"
+            android:textColor="#FFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userLoginTextView"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="4dp"
+            android:text="null"
+            android:textColor="#FFF" />
+
+        <ImageView
+            android:id="@+id/userImageView"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:contentDescription="user_image" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/change_login_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myprofile_element_height"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/chage_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_login" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/chage_login"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/text_myprofile_margin"
+            android:text="@string/change_login"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginEnd="@dimen/icon_myprofile_margin"
+            android:background="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/change_email_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myprofile_element_height"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/chage_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/ic_email" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/chage_email"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/text_myprofile_margin"
+            android:text="@string/change_email"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginEnd="@dimen/icon_myprofile_margin"
+            android:background="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/change_password_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myprofile_element_height"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/change_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/ic_password" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/change_password"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/text_myprofile_margin"
+            android:text="@string/change_password"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginEnd="@dimen/icon_myprofile_margin"
+            android:background="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+
+</LinearLayout>

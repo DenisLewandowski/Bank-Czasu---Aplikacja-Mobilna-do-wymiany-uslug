@@ -10,6 +10,10 @@
             android:title="@string/offers" />
 
         <item
+            android:id="@+id/messages"
+            android:icon="@drawable/ic_messages"
+            android:title="@string/messages" />
+        <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Narzędzia" />
@@ -25,6 +29,19 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_logout"
                 android:title="@string/log_out" />
+        </menu>
+    </item>
+
+    <item android:title="@string/others">
+        <menu>
+            <item
+                android:id="@+id/tutorial"
+                android:icon="@drawable/ic_tutorial"
+                android:title="@string/tutorial" />
+            <item
+                android:id="@+id/about_application"
+                android:icon="@drawable/ic_about_app"
+                android:title="@string/about_app" />
         </menu>
     </item>
 
