@@ -3,36 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/oceanBlue"
+    android:background="@drawable/background_login"
     tools:context=".LoginActivity">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_logo" />
-
-    <TextView
-        android:id="@+id/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/logo"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
-        android:textColor="#FFF"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
 
     <LinearLayout
         android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_name"
+        android:layout_centerVertical="true"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="55dp"
         android:orientation="vertical">
 
@@ -46,7 +25,7 @@
             android:drawablePadding="12dp"
             android:hint="Email..."
             android:textColor="#FFF"
-            android:textColorHint="#FFF" />
+            android:textColorHint="#BBB" />
 
         <View
             android:layout_width="match_parent"
@@ -58,7 +37,6 @@
             android:id="@+id/passwordSignInEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/emailEditText"
             android:layout_marginTop="24dp"
             android:background="@color/transparent"
             android:drawableStart="@drawable/ic_password_white"
@@ -66,7 +44,7 @@
             android:hint="Hasło..."
             android:inputType="textPassword"
             android:textColor="#FFF"
-            android:textColorHint="#FFF" />
+            android:textColorHint="#BBB" />
 
         <View
             android:layout_width="match_parent"
@@ -148,13 +126,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="?selectableItemBackground"
         android:layout_margin="12dp"
+        android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/sign_up"
         android:textColor="#FFF"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

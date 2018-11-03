@@ -22,4 +22,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="DialogEditTextTheme">
+        <item name="colorControlNormal">#9e9e9e</item>
+        <item name="android:colorControlActivated">@color/oceanBlue</item>
+    </style>
+
 </resources>
