@@ -1,4 +1,4 @@
-package com.example.denis.bankczasu;
+package pl.denislewandowski.bankczasu;
 
 import org.junit.Test;
 

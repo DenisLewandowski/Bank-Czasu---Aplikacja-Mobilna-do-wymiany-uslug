@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="pl.denislewandowski.bankczasu.AboutApplicationDialogFragment">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/oceanBlue"
+        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:scaleType="center"
+        android:text="@string/about_app"
+        android:textColor="#FFF"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/oceanBlue"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/app_name_extended"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/oceanBlue"
+        android:layout_marginLeft="8dp"
+        android:text="@string/version"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/oceanBlue"
+        android:text="@string/about_app_description" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/oceanBlue"
+        android:text="@string/close"
+        android:textColor="#FFF"
+        />
+
+</LinearLayout>

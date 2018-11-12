@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.denis.bankczasu">
+    package="com.example.bankczasu">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_bankczasu_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name="pl.denislewandowski.bankczasu.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="pl.denislewandowski.bankczasu.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name="pl.denislewandowski.bankczasu.SignUpActivity"></activity>
     </application>
 
 </manifest>
