@@ -20,6 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyProfileFragment extends Fragment {
 
@@ -27,6 +32,9 @@ public class MyProfileFragment extends Fragment {
     private RelativeLayout changeLoginView, changeEmailView, changePasswordView;
     private TextView userLogin, userEmail;
     private ImageView userImage;
+    private TextView timeCurrencyValueTextView;
+
+    private DatabaseReference db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +51,7 @@ public class MyProfileFragment extends Fragment {
         userLogin = getView().findViewById(R.id.userLoginTextView);
         userEmail = getView().findViewById(R.id.userEmailTextView);
         userImage = getView().findViewById(R.id.userImageView);
+        timeCurrencyValueTextView = getView().findViewById(R.id.time_currency_value);
 
         setUpUserInformation();
 
@@ -68,6 +77,20 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createDialog(ChangeDataDialog.CHANGE_PASSWORD_DIALOG);
+            }
+        });
+
+        db = FirebaseDatabase.getInstance().getReference("Users");
+        db.child(user.getUid()).child("timeCurrency").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int timeCurrencyValue = dataSnapshot.getValue(Integer.class);
+                timeCurrencyValueTextView.setText(String.valueOf(timeCurrencyValue));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

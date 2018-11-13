@@ -16,10 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="14dp"
             android:text="null"
             android:textColor="#FFF"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -146,7 +146,52 @@
             android:background="@color/colorPrimaryDark" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/myprofile_element_height"
+            android:background="@color/oceanBlue"
+            android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:textColor="#FFF"
+            android:layout_marginTop="18dp"
+            android:textSize="24sp"
+            android:text="@string/time_currency"
+            />
+
+            <TextView
+                android:id="@+id/time_currency_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_toLeftOf="@id/currencyImg"
+                android:textColor="#FFF"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="18dp"
+                android:textSize="24sp"
+                />
+
+            <ImageView
+                android:id="@+id/currencyImg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_timecurrency"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/icon_myprofile_margin"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="22dp"
+                />
+    </RelativeLayout>
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>

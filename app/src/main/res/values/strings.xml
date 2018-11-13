@@ -32,6 +32,7 @@
     <string name="change">Zmień</string>
     <string name="cancel">Anuluj</string>
     <string name="close">Zamknij</string>
+    <string name="time_currency">Czasowaluta: </string>
 
     <string name="about_app_description">Autor aplikacji:\nDenis Lewandowski\n\nAplikacja stworzona w ramach pracy inżynierskiej.</string>
 

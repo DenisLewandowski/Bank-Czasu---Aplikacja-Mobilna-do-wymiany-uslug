@@ -13,10 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bankczasu.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +32,8 @@ public class MainActivity extends AppCompatActivity
     private boolean backPressedShouldCloseApp;
     private long backPressed;
     private DrawerLayout drawer;
+    private TextView timeCurrencyValueTextView;
+    private DatabaseReference databaseUser;
 
     FragmentTransaction ft;
 
@@ -37,11 +45,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        timeCurrencyValueTextView = navigationView.getHeaderView(0).findViewById(R.id.time_currency_value_header);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        databaseUser = FirebaseDatabase.getInstance().getReference("Users");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -57,7 +68,21 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
         backPressedShouldCloseApp = true;
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        databaseUser.child(mAuth.getCurrentUser().getUid())
+                .child("timeCurrency")
+                .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int userTimeCurrencyValue = dataSnapshot.getValue(Integer.class);
+                timeCurrencyValueTextView.setText(String.valueOf(userTimeCurrencyValue));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 

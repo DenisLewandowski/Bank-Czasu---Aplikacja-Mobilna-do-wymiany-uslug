@@ -39,9 +39,7 @@ public class ServicesNeededFragment extends Fragment {
 //        Service service3 = new Service();
 //        service3.setName("Oferta Trzecia");
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.setValue(service);
+
 
         List<Service> services = new ArrayList<>();
         services.add(service);

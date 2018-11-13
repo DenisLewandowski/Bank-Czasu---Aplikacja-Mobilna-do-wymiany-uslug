@@ -30,7 +30,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -79,9 +82,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (mAuth.getCurrentUser() != null) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    if (mAuth.getCurrentUser().getDisplayName().isEmpty()) {
-                        // TODO ustawienie nazwy uzytkownika przy rejestracji
-                    }
+//                    if (mAuth.getCurrentUser().getDisplayName().isEmpty()) {
+//                        // TODO ustawienie nazwy uzytkownika przy rejestracji
+//                    }
                 }
             }
         };
@@ -190,6 +193,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(user.getUid())
+                                        .child("timeCurrency").setValue(4);
+                            }
                             finish();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
