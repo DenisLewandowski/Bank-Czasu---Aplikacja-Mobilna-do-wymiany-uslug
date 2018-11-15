@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.bankczasu.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.adapters.ServicesNeededAdapter;
 
 public class ServicesNeededFragment extends Fragment {
 
@@ -32,17 +32,21 @@ public class ServicesNeededFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recycler_view_needed);
 
-        Service service = new Service();
-        service.setName("Oferta Pierwsza");
+//        Service service = new Service();
+//        service.setName("Oferta Pierwsza");
+//        service.setCategory(Category.EDUCATION);
 //        Service service2 = new Service();
 //        service2.setName("Oferta Druga");
+//        service2.setCategory(Category.HOME);
+
 //        Service service3 = new Service();
 //        service3.setName("Oferta Trzecia");
 
 
 
         List<Service> services = new ArrayList<>();
-        services.add(service);
+//        services.add(service);
+//        services.add(service2);
 //        services.add(service2);
 //        services.add(service3);
 

@@ -1,36 +1,33 @@
 package pl.denislewandowski.bankczasu;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class Service {
-    private UUID id;
+    private String id;
     private String name;
     private String description;
-    private Category category;
+    private int category;
     private Date creationDate;
     private int timeCurrencyValue;
-    private int serviceOwnerId;
-    private boolean isFavorite;
+    private String serviceOwnerId;
 
-
-    public Service(String name, String description, Category category, Date creationDate, int timeCurrencyValue, int serviceOwnerId, boolean isFavorite) {
+    public Service(String name, String description, int category, Date creationDate, int timeCurrencyValue, String serviceOwnerId) {
         this.name = name;
         this.description = description;
         this.category = category;
         this.creationDate = creationDate;
         this.timeCurrencyValue = timeCurrencyValue;
         this.serviceOwnerId = serviceOwnerId;
-        this.isFavorite = isFavorite;
     }
 
-    public Service() {}
+    public Service() {
+    }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,11 +47,11 @@ public class Service {
         this.description = description;
     }
 
-    public Category getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
@@ -74,19 +71,11 @@ public class Service {
         this.timeCurrencyValue = timeCurrencyValue;
     }
 
-    public int getServiceOwnerId() {
+    public String getServiceOwnerId() {
         return serviceOwnerId;
     }
 
-    public void setServiceOwnerId(int serviceOwnerId) {
+    public void setServiceOwnerId(String serviceOwnerId) {
         this.serviceOwnerId = serviceOwnerId;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
     }
 }

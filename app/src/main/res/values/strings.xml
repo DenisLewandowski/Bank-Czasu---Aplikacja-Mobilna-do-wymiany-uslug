@@ -33,6 +33,20 @@
     <string name="cancel">Anuluj</string>
     <string name="close">Zamknij</string>
     <string name="time_currency">Czasowaluta: </string>
+    <string name="description">Opis</string>
+    <string name="service_name">Nazwa usługi</string>
+    <string name="add_service">Dodawanie usługi</string>
+    <string name="add">Dodaj</string>
+    <string name="category">Kategoria</string>
+    <string name="education">Edukacja</string>
+    <string name="home">Prace domowe</string>
+    <string name="repairs">Naprawy</string>
+    <string name="hobby">Hobby</string>
+    <string name="transport">Transport</string>
+    <string name="computer_science">Informatyka</string>
+    <string name="food">Jedzenie</string>
+    <string name="sport">Sport</string>
+
 
     <string name="about_app_description">Autor aplikacji:\nDenis Lewandowski\n\nAplikacja stworzona w ramach pracy inżynierskiej.</string>
 

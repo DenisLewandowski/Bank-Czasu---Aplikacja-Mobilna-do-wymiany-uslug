@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.fragments;
 
 
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.bankczasu.R;
+import pl.denislewandowski.bankczasu.R;
 
 
 public class MessagesFragment extends Fragment {

@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.activities;
 
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -16,13 +16,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bankczasu.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.dialogs.AboutApplicationDialogFragment;
+import pl.denislewandowski.bankczasu.fragments.MessagesFragment;
+import pl.denislewandowski.bankczasu.fragments.MyProfileFragment;
+import pl.denislewandowski.bankczasu.fragments.ServicesFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,26 +67,28 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
-
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main, new ServicesFragment());
-        ft.commit();
-        backPressedShouldCloseApp = true;
+        ServicesFragment sf = (ServicesFragment) getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT");
+        if (sf == null) {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, new ServicesFragment(), "MAIN_FRAGMENT");
+            ft.commit();
+            backPressedShouldCloseApp = true;
+        }
 
         databaseUser.child(mAuth.getCurrentUser().getUid())
                 .child("timeCurrency")
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userTimeCurrencyValue = dataSnapshot.getValue(Integer.class);
-                timeCurrencyValueTextView.setText(String.valueOf(userTimeCurrencyValue));
-            }
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int userTimeCurrencyValue = dataSnapshot.getValue(Integer.class);
+                        timeCurrencyValueTextView.setText(String.valueOf(userTimeCurrencyValue));
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
 
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -103,18 +110,22 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (findViewById(R.id.drawer_layout));
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (backPressedShouldCloseApp) {
-            if (backPressed + 2000 > System.currentTimeMillis()) {
-                finishAffinity();
-            } else {
-                Toast.makeText(this,
-                        "Nacisnij ponownie WSTECZ, aby zamknąć!", Toast.LENGTH_SHORT)
-                        .show();
-            }
-            backPressed = System.currentTimeMillis();
+        } else if (getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT").isVisible()) {
+            doubleClickExit();
         } else {
-            super.onBackPressed();
+        super.onBackPressed();
         }
+    }
+
+    void doubleClickExit() {
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            finishAffinity();
+        } else {
+            Toast.makeText(this,
+                    "Nacisnij ponownie WSTECZ, aby zamknąć!", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        backPressed = System.currentTimeMillis();
     }
 
     @Override
@@ -130,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             mAuth.signOut();
         }
 
@@ -160,7 +171,6 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_services_offered: {
                 fragment = new ServicesFragment();
-                backPressedShouldCloseApp = true;
                 break;
             }
             case R.id.nav_messages: {
@@ -173,7 +183,6 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.nav_myprofile: {
                 fragment = new MyProfileFragment();
-                backPressedShouldCloseApp = false;
                 break;
             }
             case R.id.nav_tutorial: {

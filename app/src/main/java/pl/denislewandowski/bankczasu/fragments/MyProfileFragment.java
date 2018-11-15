@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.bankczasu.R;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import pl.denislewandowski.bankczasu.dialogs.ChangeDataDialog;
+import pl.denislewandowski.bankczasu.LoginValidator;
+import pl.denislewandowski.bankczasu.R;
 
 public class MyProfileFragment extends Fragment {
 
@@ -104,10 +108,12 @@ public class MyProfileFragment extends Fragment {
             if (user.getPhotoUrl() != null) {
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
+                        .apply(RequestOptions.circleCropTransform())
                         .into(userImage);
             } else {
                 Glide.with(this)
                         .load(R.drawable.ic_default_image)
+                        .apply(RequestOptions.circleCropTransform())
                         .into(userImage);
             }
         }

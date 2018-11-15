@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
-    tools:context="pl.denislewandowski.bankczasu.LoginActivity">
+    tools:context="pl.denislewandowski.bankczasu.activities.LoginActivity">
 
     <LinearLayout
         android:id="@+id/loginLayout"
@@ -16,13 +16,15 @@
         android:orientation="vertical">
 
 
-        <EditText
+        <pl.denislewandowski.bankczasu.EmailEditText
             android:id="@+id/emailSignInEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:drawableStart="@drawable/ic_email_white"
             android:drawablePadding="12dp"
+            android:ems="15"
+            android:maxLines="1"
             android:hint="Email..."
             android:textColor="#FFF"
             android:textColorHint="#BBB" />

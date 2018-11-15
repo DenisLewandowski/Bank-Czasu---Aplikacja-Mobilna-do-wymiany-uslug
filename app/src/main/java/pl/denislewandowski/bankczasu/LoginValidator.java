@@ -5,7 +5,7 @@ import android.widget.EditText;
 
 public class LoginValidator {
 
-    boolean validateEmail(EditText emailEditText) {
+    public boolean validateEmail(EditText emailEditText) {
         String email = emailEditText.getText().toString().trim();
 
         if (email.isEmpty()) {
@@ -23,7 +23,7 @@ public class LoginValidator {
         return true;
     }
 
-    boolean validatePassword(EditText passwordEditText) {
+    public boolean validatePassword(EditText passwordEditText) {
         String password = passwordEditText.getText().toString().trim();
 
         if (password.isEmpty()) {
@@ -41,7 +41,7 @@ public class LoginValidator {
         return true;
     }
 
-    boolean validatePasswords(EditText passwordEditText, EditText passwordEditText2) {
+    public boolean validatePasswords(EditText passwordEditText, EditText passwordEditText2) {
         String password = passwordEditText.getText().toString().trim();
         String password2 = passwordEditText2.getText().toString().trim();
 

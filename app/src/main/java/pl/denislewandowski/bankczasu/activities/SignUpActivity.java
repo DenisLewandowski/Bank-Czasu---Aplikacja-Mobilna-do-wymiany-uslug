@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.activities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -11,13 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.bankczasu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
+
+import pl.denislewandowski.bankczasu.LoginValidator;
+import pl.denislewandowski.bankczasu.R;
 
 public class SignUpActivity extends AppCompatActivity {
 

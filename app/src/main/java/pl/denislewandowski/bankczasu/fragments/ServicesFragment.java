@@ -1,8 +1,7 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.fragments;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.bankczasu.R;
+
+import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.adapters.ServicesFragmentPagerAdapter;
 
 public class ServicesFragment extends Fragment {
 
@@ -44,8 +45,11 @@ public class ServicesFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Dodawanie usługi...", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, new AddServiceFragment())
+                .addToBackStack(null)
+//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                .commit();
             }
         });
     }

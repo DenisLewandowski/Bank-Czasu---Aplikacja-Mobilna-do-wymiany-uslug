@@ -1,9 +1,12 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import pl.denislewandowski.bankczasu.fragments.ServicesNeededFragment;
+import pl.denislewandowski.bankczasu.fragments.ServicesOfferedFragment;
 
 public class ServicesFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -20,7 +23,6 @@ public class ServicesFragmentPagerAdapter extends FragmentPagerAdapter {
                 return new ServicesNeededFragment();
             case 1:
                 return new ServicesOfferedFragment();
-
         }
         return null;
     }

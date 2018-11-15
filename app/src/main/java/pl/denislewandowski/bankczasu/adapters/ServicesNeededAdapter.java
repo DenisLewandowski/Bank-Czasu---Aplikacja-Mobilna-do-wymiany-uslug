@@ -1,15 +1,20 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.bankczasu.R;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import pl.denislewandowski.bankczasu.CategoryUtils;
+import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.Service;
 
 public class ServicesNeededAdapter extends RecyclerView.Adapter<ServicesNeededAdapter.ViewHolder> {
     private List<Service> servicesNeededList;
@@ -19,6 +24,8 @@ public class ServicesNeededAdapter extends RecyclerView.Adapter<ServicesNeededAd
         this.servicesNeededList = servicesNeededList;
         this.context = context;
     }
+
+    public ServicesNeededAdapter() {}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,14 +47,24 @@ public class ServicesNeededAdapter extends RecyclerView.Adapter<ServicesNeededAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
+        public ImageView categoryImageView;
+        public TextView timeCurrencyTextView;
 
         void bindView(Service service) {
             titleTextView.setText(service.getName());
+            timeCurrencyTextView.setText(String.valueOf(service.getTimeCurrencyValue()));
+            if (categoryImageView != null) {
+                Glide.with(context).load(CategoryUtils.imageResourceIds[service.getCategory()])
+//                        .apply(RequestOptions.circleCropTransform())
+                        .into(categoryImageView);
+            }
         }
 
         public ViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.offer_title);
+            categoryImageView = itemView.findViewById(R.id.category_image);
+            timeCurrencyTextView = itemView.findViewById(R.id.time_currency_value_list);
         }
     }
 }

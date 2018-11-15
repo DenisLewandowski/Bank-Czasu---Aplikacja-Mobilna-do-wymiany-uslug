@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.dialogs;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.bankczasu.R;
+import pl.denislewandowski.bankczasu.R;
+
 
 public class ChangeDataDialog {
     public static final int CHANGE_LOGIN_DIALOG = 1;
@@ -21,7 +22,7 @@ public class ChangeDataDialog {
 
     private int dialogTitleId;
     private int dialogHintId;
-    AlertDialog dialog;
+    public AlertDialog dialog;
 
     public ChangeDataDialog(Context ctx, LayoutInflater layoutInflater, int DIALOG_TYPE) {
         this.ctx = ctx;
@@ -46,7 +47,7 @@ public class ChangeDataDialog {
         }
     }
 
-    void showDialog() {
+    public void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         View mView;
         if(DIALOG_TYPE != CHANGE_PASSWORD_DIALOG) {

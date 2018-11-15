@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_names">
+        <item>@string/home</item>
+        <item>@string/education</item>
+        <item>@string/repairs</item>
+        <item>@string/hobby</item>
+        <item>@string/transport</item>
+        <item>@string/computer_science</item>
+        <item>@string/food</item>
+        <item>@string/sport</item>
+        <item>@string/others</item>
+    </string-array>
+
+</resources>
