@@ -46,7 +46,16 @@
     <string name="computer_science">Informatyka</string>
     <string name="food">Jedzenie</string>
     <string name="sport">Sport</string>
-
+    <string name="empty_screen_timebanks">Nie jesteś jeszcze w żadnym banku czasu</string>
+    <string name="create_timebank">Stwórz nowy Bank Czasu</string>
+    <string name="join_timebank">Dołącz do Banku Czasu</string>
+    <string name="write_timebank_code">Wpisz kod banku czasu</string>
+    <string name="timbank_code">Kod banku czasu</string>
+    <string name="join">Dołącz</string>
+    <string name="create">Stwórz</string>
+    <string name="add_person">Dodaj osobę</string>
+    <string name="give_code_to_others">Przekaż ten kod osobie, którą chcesz dodać do banku</string>
+    <string name="members">członkowie</string>
 
     <string name="about_app_description">Autor aplikacji:\nDenis Lewandowski\n\nAplikacja stworzona w ramach pracy inżynierskiej.</string>
 

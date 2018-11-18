@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +62,7 @@ public class AddServiceFragment extends Fragment {
         addButton = getView().findViewById(R.id.add_service_button);
 
         initList();
-        adapter = new TimeCurrencySpinnerAdapter(getContext(),timeCurrencyList);
+        adapter = new TimeCurrencySpinnerAdapter(getContext(), timeCurrencyList);
         timeCurrencySpinner.setAdapter(adapter);
         categoryAdapter = new CategorySpinnerAdapter(getContext(), getResources().getStringArray(R.array.category_names));
         categorySpinner.setAdapter(categoryAdapter);
@@ -66,17 +70,37 @@ public class AddServiceFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateData()) {
-                    Service service = makeServiceObject();
-                    FirebaseDatabase.getInstance().getReference("Services")
-                            .child(service.getId())
-                            .setValue(service);
+                if (validateData()) {
                     FirebaseDatabase.getInstance().getReference("Users")
-                            .child("Services")
-                            .push()
-                            .setValue(service.getId());
-                    Toast.makeText(getContext(), "Dodano usługę!", Toast.LENGTH_LONG).show();
-                    getActivity().onBackPressed();
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("Timebank").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Service service = makeServiceObject();
+                            FirebaseDatabase.getInstance().getReference("Timebanks")
+                                    .child(dataSnapshot.getValue(String.class))
+                                    .child("Services")
+                                    .child(service.getId())
+                                    .setValue(service);
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("Services")
+                                    .push()
+                                    .setValue(service.getId());
+                            Toast.makeText(getContext(), "Dodano usługę!", Toast.LENGTH_LONG).show();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_main, new TimebankFragment())
+                                    .commit();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
             }
         });
@@ -102,21 +126,26 @@ public class AddServiceFragment extends Fragment {
 
     private void initList() {
         timeCurrencyList = new ArrayList<>();
-        timeCurrencyList.add(new TimeCurrency(2,30));
-        timeCurrencyList.add(new TimeCurrency(3,45));
-        timeCurrencyList.add(new TimeCurrency(4,60));
-        timeCurrencyList.add(new TimeCurrency(6,90));
+        timeCurrencyList.add(new TimeCurrency(0, 0));
+        timeCurrencyList.add(new TimeCurrency(2, 30));
+        timeCurrencyList.add(new TimeCurrency(3, 45));
+        timeCurrencyList.add(new TimeCurrency(4, 60));
+        timeCurrencyList.add(new TimeCurrency(6, 90));
     }
 
     private boolean validateData() {
-        if(serviceNameEditText.getText().toString().length() < 4) {
+        if (serviceNameEditText.getText().toString().length() < 4) {
             serviceNameEditText.setError("Wpisz tytuł usługi");
             serviceNameEditText.requestFocus();
             return false;
         }
-        if(descriptionEditText.getText().toString().length() < 8) {
+        if (descriptionEditText.getText().toString().length() < 8) {
             descriptionEditText.setError("Wpisz opis usługi");
             descriptionEditText.requestFocus();
+            return false;
+        }
+        if (timeCurrencySpinner.getSelectedItemId() == 0) {
+            Toast.makeText(getContext(), "Ustaw wartość czasowaluty", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

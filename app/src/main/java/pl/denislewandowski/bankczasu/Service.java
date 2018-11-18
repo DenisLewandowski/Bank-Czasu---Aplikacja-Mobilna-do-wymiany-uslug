@@ -20,8 +20,7 @@ public class Service {
         this.serviceOwnerId = serviceOwnerId;
     }
 
-    public Service() {
-    }
+    public Service() {}
 
     public String getId() {
         return id;

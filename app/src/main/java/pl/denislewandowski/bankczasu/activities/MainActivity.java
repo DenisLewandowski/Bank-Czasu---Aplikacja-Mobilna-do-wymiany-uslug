@@ -27,18 +27,19 @@ import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.dialogs.AboutApplicationDialogFragment;
 import pl.denislewandowski.bankczasu.fragments.MessagesFragment;
 import pl.denislewandowski.bankczasu.fragments.MyProfileFragment;
-import pl.denislewandowski.bankczasu.fragments.ServicesFragment;
+import pl.denislewandowski.bankczasu.fragments.TimebankFragment;
+import pl.denislewandowski.bankczasu.fragments.UserWithoutTimebankFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private boolean backPressedShouldCloseApp;
     private long backPressed;
     private DrawerLayout drawer;
     private TextView timeCurrencyValueTextView;
     private DatabaseReference databaseUser;
+    private boolean hasUserAnyTimebank;
 
     FragmentTransaction ft;
 
@@ -67,13 +68,26 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
-        ServicesFragment sf = (ServicesFragment) getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT");
-        if (sf == null) {
-            ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, new ServicesFragment(), "MAIN_FRAGMENT");
-            ft.commit();
-            backPressedShouldCloseApp = true;
-        }
+
+        databaseUser.child(mAuth.getCurrentUser().getUid()).child("Timebank").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String timebankId = dataSnapshot.getValue(String.class);
+                setTimebankFragment(timebankId);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+//        TimebankFragment sf = (TimebankFragment) getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT");
+//        if (sf == null) {
+//            ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.content_main, new TimebankFragment(), "MAIN_FRAGMENT");
+//            ft.commit();
+//        }
 
         databaseUser.child(mAuth.getCurrentUser().getUid())
                 .child("timeCurrency")
@@ -110,10 +124,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (findViewById(R.id.drawer_layout));
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT").isVisible()) {
+        } else if (getSupportFragmentManager().findFragmentByTag("TIMEBANK_FRAGMENT").isVisible()) {
             doubleClickExit();
         } else {
-        super.onBackPressed();
+            super.onBackPressed();
         }
     }
 
@@ -138,9 +152,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.action_logout) {
             mAuth.signOut();
         }
@@ -170,7 +181,10 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_services_offered: {
-                fragment = new ServicesFragment();
+                if (hasUserAnyTimebank)
+                    fragment = new TimebankFragment();
+                else
+                    fragment = new UserWithoutTimebankFragment();
                 break;
             }
             case R.id.nav_messages: {
@@ -202,6 +216,20 @@ public class MainActivity extends AppCompatActivity
             ft.addToBackStack(null);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+        }
+    }
+
+    private void setTimebankFragment(String timebankId) {
+        if (timebankId == null) {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, new UserWithoutTimebankFragment(), "TIMEBANK_FRAGMENT");
+            ft.commit();
+            hasUserAnyTimebank = false;
+        } else {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, new TimebankFragment(), "TIMEBANK_FRAGMENT");
+            ft.commit();
+            hasUserAnyTimebank = true;
         }
     }
 }

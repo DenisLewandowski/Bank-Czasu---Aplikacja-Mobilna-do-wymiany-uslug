@@ -16,16 +16,16 @@ import pl.denislewandowski.bankczasu.CategoryUtils;
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.Service;
 
-public class ServicesNeededAdapter extends RecyclerView.Adapter<ServicesNeededAdapter.ViewHolder> {
+public class TimebankServicesAdapter extends RecyclerView.Adapter<TimebankServicesAdapter.ViewHolder> {
     private List<Service> servicesNeededList;
     private Context context;
 
-    public ServicesNeededAdapter(List<Service> servicesNeededList, Context context) {
+    public TimebankServicesAdapter(List<Service> servicesNeededList, Context context) {
         this.servicesNeededList = servicesNeededList;
         this.context = context;
     }
 
-    public ServicesNeededAdapter() {}
+    public TimebankServicesAdapter() {}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

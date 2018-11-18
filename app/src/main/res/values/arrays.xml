@@ -12,4 +12,10 @@
         <item>@string/others</item>
     </string-array>
 
+    <string-array name="tab_titles">
+        <item>@string/offers</item>
+        <item>@string/my_offerts</item>
+        <item>@string/members</item>
+    </string-array>
+
 </resources>

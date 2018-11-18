@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import pl.denislewandowski.bankczasu.fragments.ServicesNeededFragment;
-import pl.denislewandowski.bankczasu.fragments.ServicesOfferedFragment;
+import pl.denislewandowski.bankczasu.fragments.TimebankServicesFragment;
+import pl.denislewandowski.bankczasu.fragments.MyServicesFragment;
 
 public class ServicesFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private String[] tabNames = {"Oferuję", "Potrzebuję"};
+    private String[] tabNames = {"Oferty", "Moje oferty", "Członkowie"};
 
     public ServicesFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -20,9 +20,11 @@ public class ServicesFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new ServicesNeededFragment();
+                return new TimebankServicesFragment();
             case 1:
-                return new ServicesOfferedFragment();
+                return new MyServicesFragment();
+            case 2:
+                return new MyServicesFragment();
         }
         return null;
     }

@@ -8,7 +8,7 @@
             android:id="@+id/nav_services_offered"
             android:icon="@drawable/ic_menu_clock"
             android:checked="true"
-            android:title="@string/offers" />
+            android:title="@string/app_name" />
 
         <item
             android:id="@+id/nav_messages"
