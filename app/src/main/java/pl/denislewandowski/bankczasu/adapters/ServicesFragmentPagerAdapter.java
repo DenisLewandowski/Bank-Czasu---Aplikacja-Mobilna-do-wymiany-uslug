@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import pl.denislewandowski.bankczasu.fragments.TimebankMembersFragment;
 import pl.denislewandowski.bankczasu.fragments.TimebankServicesFragment;
 import pl.denislewandowski.bankczasu.fragments.MyServicesFragment;
 
@@ -24,7 +25,7 @@ public class ServicesFragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new MyServicesFragment();
             case 2:
-                return new MyServicesFragment();
+                return new TimebankMembersFragment();
         }
         return null;
     }

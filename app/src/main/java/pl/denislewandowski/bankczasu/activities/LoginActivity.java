@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +31,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import pl.denislewandowski.bankczasu.EmailEditText;
 import pl.denislewandowski.bankczasu.LoginValidator;
@@ -73,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getApplicationContext(), "Connection with Google failed!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Połączenie z  Google zostało przerwane!", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -84,9 +88,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (mAuth.getCurrentUser() != null) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    if (mAuth.getCurrentUser().getDisplayName().isEmpty()) {
-//                        // TODO ustawienie nazwy uzytkownika przy rejestracji
-//                    }
                 }
             }
         };
@@ -179,11 +180,10 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Logowanie przez google nieudane", e);
             }
         }
     }
-
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
@@ -196,9 +196,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(user.getUid())
-                                        .child("timeCurrency").setValue(4);
+                                DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(user.getUid());
+                                dr.child("timeCurrency").setValue(4);
+                                dr.child("Name").setValue(user.getDisplayName());
                             }
                             finish();
                         } else {

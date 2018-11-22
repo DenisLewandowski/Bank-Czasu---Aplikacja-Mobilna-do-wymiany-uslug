@@ -8,6 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="offers">Oferty</string>
+    <string name="service">Usługa</string>
     <string name="my_offerts">Moje Oferty</string>
     <string name="user">Użytkownik</string>
     <string name="email">Email</string>
@@ -56,8 +57,36 @@
     <string name="add_person">Dodaj osobę</string>
     <string name="give_code_to_others">Przekaż ten kod osobie, którą chcesz dodać do banku</string>
     <string name="members">członkowie</string>
+    <string name="cost">Koszt</string>
+    <string name="get_setvice">kup usługę</string>
+    <string name="service_owner">Wystawiający</string>
+    <string name="creation_date">Data wystawienia</string>
+    <string name="service_done">Usługa wykonana</string>
+    <string name="swipe_to_confirm">Przesuń w prawo, aby potwierdzić</string>
+    <string name="swipe_to_cancel">Przesuń w lewo, aby anulować</string>
+    <string name="choose_photo">Wybierz zdjęcie</string>
+    <string name="choose_from_gallery">Wybierz z galerii</string>
+    <string name="take_photo">Zrób zdjęcie</string>
 
     <string name="about_app_description">Autor aplikacji:\nDenis Lewandowski\n\nAplikacja stworzona w ramach pracy inżynierskiej.</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit">edytuj</string>
+    <string name="delete">USUŃ</string>
+    <string name="edit_service">Edycja usługi</string>
+    <string name="copied_to_clipboard">Skopiowano do schowka</string>
+    <string name="copy">Kopiuj</string>
+    <string name="services_to_do">Usługi do wykonania</string>
+    <string name="change_photo">Zmień zdjęcie</string>
+    <string name="back">COFNIJ</string>
+    <string name="back_service">COFNIJ USŁUGĘ</string>
+    <string name="back_service_description">Cofanie usługi - jeśli nie jesteś w stanie wykonać usługi to cofnij usługę, kupujący otrzyma wtedy z powrotem swoją czasowalutę.</string>
+    <string name="confirm">POTWIERDŹ</string>
+    <string name="confirm_service">Potwierdź wykonanie</string>
+    <string name="confirm_service_description">Jeśli usługa została wykonana - potwierdź jej wykonanie. Właściciel usługi otrzyma wtedy swoją czasowalutę.</string>
+    <string name="write_name">Wpisz swoje imie...</string>
+    <string name="exit_timebank">Opuść bank czasu</string>
+    <string name="exit_timebank_description">Opuść aktualny bank czasu - jeśli opuścisz bank czasu przepadną wszystkie Twoje oferty usług i czasowaltua. Czy na pewno chcesz opuścić bank czasu?</string>
+    <string name="no">Nie</string>
+    <string name="leave">Opuść bank czasu</string>
 </resources>

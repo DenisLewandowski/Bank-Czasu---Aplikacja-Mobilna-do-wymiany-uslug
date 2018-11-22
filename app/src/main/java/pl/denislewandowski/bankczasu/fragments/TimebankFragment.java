@@ -1,5 +1,8 @@
 package pl.denislewandowski.bankczasu.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -15,8 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.TimebankData;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.ServicesFragmentPagerAdapter;
+import pl.denislewandowski.bankczasu.dialogs.LeaveTimebankDialogFragment;
 import pl.denislewandowski.bankczasu.dialogs.TimebankCodeDialogFragment;
 
 public class TimebankFragment extends Fragment {
@@ -24,6 +40,7 @@ public class TimebankFragment extends Fragment {
     private FloatingActionButton fab;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private String timebankId;
 
     @Nullable
     @Override
@@ -37,6 +54,7 @@ public class TimebankFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         setHasOptionsMenu(true);
+        addCurrencyValueToSharedPreferences();
 
         return view;
     }
@@ -88,8 +106,33 @@ public class TimebankFragment extends Fragment {
             dialog.show(getFragmentManager(), "TIMEBANK_CODE_DIALOG" );
         }
 
+        if(id == R.id.exit_timebank) {
+            LeaveTimebankDialogFragment dialog = new LeaveTimebankDialogFragment();
+            dialog.show(getChildFragmentManager(), "LEAVE_TIMEBANK_DIALOG");
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void addCurrencyValueToSharedPreferences() {
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("timeCurrency").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Integer timeCurrencyValue = dataSnapshot.getValue(Integer.class);
+                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("TIME_CURRENCY", timeCurrencyValue);
+                editor.commit();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

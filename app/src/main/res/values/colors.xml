@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#013859</color>
-    <color name="colorPrimaryDark">#000</color>
-    <!--<color name="colorAccent">#FFFFFF</color>-->
+    <color name="colorPrimaryDark">#013859</color>
     <color name="colorAccent">#AAA</color>
     <color name="googleRed">#dd4b39</color>
     <color name="colorLightGray">#666666</color>
     <color name="transparent">#00000000</color>
+
     <color name="oceanBlue">#0077be</color>
+    <color name="lightBlue">#50a3d3</color>
 
 </resources>

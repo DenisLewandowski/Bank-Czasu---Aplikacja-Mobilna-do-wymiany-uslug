@@ -9,12 +9,11 @@
     tools:context="pl.denislewandowski.bankczasu.activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <!--<ProgressBar-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:indeterminateDrawable="@drawable/progress_bar_blue"-->
-        <!--android:visibility="visible"-->
-        <!--/>-->
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyle"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

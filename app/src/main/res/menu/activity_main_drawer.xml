@@ -16,9 +16,9 @@
             android:title="@string/messages" />
 
         <item
-            android:id="@+id/nav_myoffers"
-            android:icon="@drawable/ic_myoffert"
-            android:title="@string/my_offerts" />
+            android:id="@+id/nav_todo"
+            android:icon="@drawable/ic_to_do"
+            android:title="@string/services_to_do" />
     </group>
 
     <item android:title="@string/user">

@@ -1,5 +1,8 @@
 package pl.denislewandowski.bankczasu.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,26 +10,37 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pl.denislewandowski.bankczasu.FirebaseRepository;
 import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.TimebankData;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.dialogs.AboutApplicationDialogFragment;
 import pl.denislewandowski.bankczasu.fragments.MessagesFragment;
 import pl.denislewandowski.bankczasu.fragments.MyProfileFragment;
+import pl.denislewandowski.bankczasu.fragments.ServicesToDoFragment;
 import pl.denislewandowski.bankczasu.fragments.TimebankFragment;
 import pl.denislewandowski.bankczasu.fragments.UserWithoutTimebankFragment;
 
@@ -37,9 +51,14 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     private long backPressed;
     private DrawerLayout drawer;
-    private TextView timeCurrencyValueTextView;
+    private TextView timeCurrencyValueTextView, userNameTextView;
+    private ImageView userImage;
     private DatabaseReference databaseUser;
     private boolean hasUserAnyTimebank;
+    private ContentLoadingProgressBar progressBar;
+    private TimebankViewModel timebankViewModel;
+    private String timebankId;
+    FirebaseRepository repository;
 
     FragmentTransaction ft;
 
@@ -53,6 +72,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         timeCurrencyValueTextView = navigationView.getHeaderView(0).findViewById(R.id.time_currency_value_header);
+        progressBar = findViewById(R.id.progress_bar);
+        userNameTextView = navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_user_login);
+        userImage = navigationView.getHeaderView(0).findViewById(R.id.nav_header_image);
+        timebankViewModel = ViewModelProviders.of(this).get(TimebankViewModel.class);
+
+        addCurrentTimebankIdToSharedPreferences();
+
+        repository = new FirebaseRepository(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -82,13 +110,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-//        TimebankFragment sf = (TimebankFragment) getSupportFragmentManager().findFragmentByTag("MAIN_FRAGMENT");
-//        if (sf == null) {
-//            ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.content_main, new TimebankFragment(), "MAIN_FRAGMENT");
-//            ft.commit();
-//        }
-
         databaseUser.child(mAuth.getCurrentUser().getUid())
                 .child("timeCurrency")
                 .addValueEventListener(new ValueEventListener() {
@@ -104,6 +125,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
+        repository.setUserImage(userImage);
+        repository.setUserName(userNameTextView);
+        FirebaseUser user = mAuth.getCurrentUser();
+        userNameTextView.setText(user.getDisplayName());
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -191,8 +216,8 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MessagesFragment();
                 break;
             }
-            case R.id.nav_myoffers: {
-
+            case R.id.nav_todo: {
+                fragment = new ServicesToDoFragment();
                 break;
             }
             case R.id.nav_myprofile: {
@@ -222,14 +247,62 @@ public class MainActivity extends AppCompatActivity
     private void setTimebankFragment(String timebankId) {
         if (timebankId == null) {
             ft = getSupportFragmentManager().beginTransaction();
+            progressBar.hide();
             ft.replace(R.id.content_main, new UserWithoutTimebankFragment(), "TIMEBANK_FRAGMENT");
             ft.commit();
             hasUserAnyTimebank = false;
         } else {
             ft = getSupportFragmentManager().beginTransaction();
+            progressBar.hide();
             ft.replace(R.id.content_main, new TimebankFragment(), "TIMEBANK_FRAGMENT");
             ft.commit();
             hasUserAnyTimebank = true;
         }
     }
+
+    public void addCurrentTimebankIdToSharedPreferences() {
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Timebank")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        timebankId = dataSnapshot.getValue(String.class);
+                        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("CURRENT_TIMEBANK", timebankId);
+                        editor.commit();
+                        //TODO : edytować to żeby nie bylo w shared i nazwać lepiej
+                        if (timebankId != null)
+                            setTimebankDataInViewModel();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    public void setTimebankDataInViewModel() {
+        FirebaseDatabase.getInstance().getReference("Timebanks").child(timebankId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Service> services = new ArrayList<>();
+                        List<String> members = new ArrayList<>();
+
+                        for (DataSnapshot ds : dataSnapshot.child("Services").getChildren()) {
+                            services.add(ds.getValue(Service.class));
+                        }
+                        for (DataSnapshot ds : dataSnapshot.child("Members").getChildren()) {
+                            members.add(ds.getValue(String.class));
+                        }
+                        timebankViewModel.timebankData.setValue(new TimebankData(timebankId, members, services));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
 }

@@ -10,7 +10,6 @@
         android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_name"
         android:layout_marginStart="55dp"
         android:layout_marginTop="260dp"
         android:layout_marginEnd="55dp"
@@ -18,11 +17,30 @@
 
 
         <EditText
-            android:id="@+id/emailEditText"
+            android:id="@+id/userNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:layout_marginTop="6dp"
+            android:drawableStart="@drawable/ic_person_white"
+            android:drawablePadding="12dp"
+            android:hint="@string/write_name"
+            android:inputType="textEmailAddress"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#FFF" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_marginTop="24dp"
             android:drawableStart="@drawable/ic_email_white"
             android:drawablePadding="12dp"
             android:hint="Email..."

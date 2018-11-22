@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import pl.denislewandowski.bankczasu.LoginValidator;
@@ -23,7 +25,7 @@ import pl.denislewandowski.bankczasu.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText emailEditText, passwordEditText, passwordEditText2;
+    private EditText userNameEditText, emailEditText, passwordEditText, passwordEditText2;
     private Button signUpButton;
     private FirebaseAuth mAuth;
 
@@ -36,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         passwordEditText2 = findViewById(R.id.passwordEditText2);
         signUpButton = findViewById(R.id.signUpButton);
+        userNameEditText = findViewById(R.id.userNameEditText);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -44,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (checkConnection()) {
                     LoginValidator lv = new LoginValidator();
-                    if (lv.validateEmail(emailEditText) && lv.validatePasswords(passwordEditText, passwordEditText2)) {
+                    if (lv.validateName(userNameEditText) && lv.validateEmail(emailEditText) && lv.validatePasswords(passwordEditText, passwordEditText2)) {
                         registerUser();
                     }
                 } else {
@@ -57,13 +60,15 @@ public class SignUpActivity extends AppCompatActivity {
     private void registerUser() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
+        final String name = userNameEditText.getText().toString();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseDatabase.getInstance().getReference("Users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("timeCurrency").setValue(4);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    ref.child("timeCurrency").setValue(4);
+                    ref.child("Name").setValue(name);
                     Toast.makeText(SignUpActivity.this, "Rejestracja przebiegła pomyślnie!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {

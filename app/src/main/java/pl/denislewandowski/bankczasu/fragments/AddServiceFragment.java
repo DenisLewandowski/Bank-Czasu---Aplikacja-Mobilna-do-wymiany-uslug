@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import pl.denislewandowski.bankczasu.FirebaseRepository;
 import pl.denislewandowski.bankczasu.Service;
 import pl.denislewandowski.bankczasu.TimeCurrency;
 import pl.denislewandowski.bankczasu.R;
@@ -71,36 +72,9 @@ public class AddServiceFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validateData()) {
-                    FirebaseDatabase.getInstance().getReference("Users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("Timebank").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Service service = makeServiceObject();
-                            FirebaseDatabase.getInstance().getReference("Timebanks")
-                                    .child(dataSnapshot.getValue(String.class))
-                                    .child("Services")
-                                    .child(service.getId())
-                                    .setValue(service);
-
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .child("Services")
-                                    .push()
-                                    .setValue(service.getId());
-                            Toast.makeText(getContext(), "Dodano usługę!", Toast.LENGTH_LONG).show();
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.content_main, new TimebankFragment())
-                                    .commit();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-
+                    Service service = makeServiceObject();
+                    FirebaseRepository repository = new FirebaseRepository(getActivity());
+                    repository.addService(service);
                 }
             }
         });
@@ -161,6 +135,7 @@ public class AddServiceFragment extends Fragment {
         service.setTimeCurrencyValue(tc.getTimeCurrencyValue());
         service.setServiceOwnerId(FirebaseAuth.getInstance().getCurrentUser().getUid());
         service.setCategory(categorySpinner.getSelectedItemPosition());
+        service.setClientId("");
         return service;
     }
 

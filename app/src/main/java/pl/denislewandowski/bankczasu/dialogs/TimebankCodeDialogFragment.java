@@ -1,5 +1,8 @@
 package pl.denislewandowski.bankczasu.dialogs;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +25,7 @@ import pl.denislewandowski.bankczasu.R;
 public class TimebankCodeDialogFragment extends DialogFragment {
 
     private TextView timebankCodeTextView;
-    private Button closeButton;
+    private Button closeButton, copyButton;
 
     @Nullable
     @Override
@@ -30,11 +34,22 @@ public class TimebankCodeDialogFragment extends DialogFragment {
 
         timebankCodeTextView = view.findViewById(R.id.timebank_code);
         closeButton = view.findViewById(R.id.cancel_button);
+        copyButton = view.findViewById(R.id.copy_button);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getDialog().dismiss();
+            }
+        });
+
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("TIMEBANK_CODE", timebankCodeTextView.getText().toString());
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getContext(), getString(R.string.copied_to_clipboard), Toast.LENGTH_LONG).show();
             }
         });
 

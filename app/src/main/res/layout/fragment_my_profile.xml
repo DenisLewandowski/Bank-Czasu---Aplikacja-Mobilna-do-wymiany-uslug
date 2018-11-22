@@ -38,7 +38,9 @@
             android:layout_height="64dp"
             android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
-            android:contentDescription="user_image" />
+            android:background="@drawable/oval_background_white"
+            android:contentDescription="user_image"
+            android:scaleType="center" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -53,8 +55,8 @@
             android:id="@+id/chage_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/icon_myprofile_margin"
-            android:layout_marginTop="12dp"
             android:src="@drawable/ic_login" />
 
         <TextView
@@ -64,7 +66,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/text_myprofile_margin"
             android:text="@string/change_login"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <View
@@ -89,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/icon_myprofile_margin"
-            android:layout_marginTop="13dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_email" />
 
         <TextView
@@ -99,7 +101,42 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/text_myprofile_margin"
             android:text="@string/change_email"
-            android:textSize="16sp"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_marginEnd="@dimen/icon_myprofile_margin"
+            android:background="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/change_photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myprofile_element_height"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/change_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/icon_myprofile_margin"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_change_photo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/change_photo"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/text_myprofile_margin"
+            android:text="@string/change_photo"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <View
@@ -124,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/icon_myprofile_margin"
-            android:layout_marginTop="13dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_password" />
 
         <TextView
@@ -134,7 +171,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/text_myprofile_margin"
             android:text="@string/change_password"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <View
@@ -153,42 +190,39 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/myprofile_element_height"
-            android:background="@color/oceanBlue"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/oceanBlue">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/icon_myprofile_margin"
-            android:textColor="#FFF"
-            android:layout_marginTop="18dp"
-            android:textSize="24sp"
-            android:text="@string/time_currency"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/icon_myprofile_margin"
+                android:layout_marginTop="18dp"
+                android:text="@string/time_currency"
+                android:textColor="#FFF"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/time_currency_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:layout_toLeftOf="@id/currencyImg"
-                android:textColor="#FFF"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="18dp"
-                android:textSize="24sp"
-                />
+                android:layout_toLeftOf="@id/currencyImg"
+                android:text="0"
+                android:textColor="#FFF"
+                android:textSize="24sp" />
 
             <ImageView
                 android:id="@+id/currencyImg"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_timecurrency"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/icon_myprofile_margin"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="22dp"
-                />
-    </RelativeLayout>
+                android:layout_marginEnd="@dimen/icon_myprofile_margin"
+                android:src="@drawable/ic_timecurrency" />
+        </RelativeLayout>
 
 
     </RelativeLayout>

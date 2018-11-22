@@ -1,8 +1,13 @@
 package pl.denislewandowski.bankczasu;
 
-import java.util.Date;
+import com.google.firebase.database.Exclude;
 
-public class Service {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Service implements Serializable {
     private String id;
     private String name;
     private String description;
@@ -10,6 +15,7 @@ public class Service {
     private Date creationDate;
     private int timeCurrencyValue;
     private String serviceOwnerId;
+    private String clientId;
 
     public Service(String name, String description, int category, Date creationDate, int timeCurrencyValue, String serviceOwnerId) {
         this.name = name;
@@ -77,4 +83,29 @@ public class Service {
     public void setServiceOwnerId(String serviceOwnerId) {
         this.serviceOwnerId = serviceOwnerId;
     }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("name", name);
+        result.put("category", category);
+        result.put("creationDate", creationDate);
+        result.put("description", description);
+        result.put("serviceOwnerId", serviceOwnerId);
+        result.put("timeCurrencyValue", timeCurrencyValue);
+        result.put("clientId", clientId);
+
+        return result;
+    }
+
+
 }

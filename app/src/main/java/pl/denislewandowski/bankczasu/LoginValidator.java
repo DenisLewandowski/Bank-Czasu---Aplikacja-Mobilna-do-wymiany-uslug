@@ -23,6 +23,17 @@ public class LoginValidator {
         return true;
     }
 
+    public boolean validateName(EditText editText) {
+        String name = editText.getText().toString().trim();
+
+        if(name.isEmpty()) {
+            editText.setError("Wpisz imię");
+            editText.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
     public boolean validatePassword(EditText passwordEditText) {
         String password = passwordEditText.getText().toString().trim();
 

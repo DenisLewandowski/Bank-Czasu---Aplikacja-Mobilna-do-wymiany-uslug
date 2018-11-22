@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context="pl.denislewandowski.bankczasu.fragments.TimebankServicesFragment">
 
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyle"
+        android:layout_centerInParent="true" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_needed"
         android:layout_margin="2dp"

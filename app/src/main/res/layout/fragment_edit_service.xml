@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/service_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/max_chars"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/oceanBlue"
+        android:ems="15"
+        android:hint="@string/service_name"
+        android:inputType="text"
+        android:maxLength="40"
+        android:textColor="@color/oceanBlue"
+        android:textColorHint="#BBB" />
+
+    <TextView
+        android:id="@+id/char_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_toStartOf="@id/max_chars" />
+
+    <TextView
+        android:id="@+id/max_chars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:text="/40" />
+
+    <EditText
+        android:id="@+id/service_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/service_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/oceanBlue"
+        android:ems="15"
+        android:hint="@string/description"
+        android:inputType="text"
+        android:textColor="@color/oceanBlue"
+        android:textColorHint="#BBB" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@id/service_description"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="@string/category" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="180dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/service_description"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@id/category_spinner"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="@string/time_currency" />
+
+    <Spinner
+        android:id="@+id/time_currency_spinner"
+        android:layout_width="180dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/category_spinner"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/oceanBlue">
+
+            <Button
+                android:id="@+id/delete_service_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/delete"
+                android:textSize="12sp"
+                android:drawableTop="@drawable/ic_delete"
+                android:textColor="#FFF" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#FFF"/>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/oceanBlue">
+
+        <Button
+            android:id="@+id/edit_service_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:text="@string/edit"
+            android:textSize="12sp"
+            android:drawableTop="@drawable/ic_edit"
+            android:textColor="#FFF" />
+    </FrameLayout>
+
+</LinearLayout>
+
+</RelativeLayout>

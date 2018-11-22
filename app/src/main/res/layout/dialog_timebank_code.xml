@@ -22,29 +22,56 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/oceanBlue"
         android:layout_marginStart="8dp"
-        android:text="@string/give_code_to_others"/>
+        android:text="@string/give_code_to_others"
+        android:textColor="@color/oceanBlue" />
 
     <TextView
         android:id="@+id/timebank_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:text="@string/timbank_code"
         android:textColor="@color/oceanBlue"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:textIsSelectable="true"
-        android:text="@string/timbank_code"/>
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/cancel_button"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@color/oceanBlue"
-        android:text="@string/close"
-        android:textColor="#FFF"
-        />
+        android:layout_marginTop="20dp">
+
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/oceanBlue"
+            android:text="@string/close"
+            android:textColor="#FFF" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#FFF" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/oceanBlue" >
+            <Button
+                android:id="@+id/copy_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/copy"
+                android:textColor="#FFF" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

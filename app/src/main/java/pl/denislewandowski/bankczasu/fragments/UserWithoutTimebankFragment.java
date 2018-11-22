@@ -53,7 +53,6 @@ public class UserWithoutTimebankFragment extends Fragment {
                 createNewTimebank();
             }
         });
-
     }
 
     private void createNewTimebank() {
@@ -61,6 +60,7 @@ public class UserWithoutTimebankFragment extends Fragment {
         String newTimebankId = UUID.randomUUID().toString();
         FirebaseDatabase.getInstance().getReference("Users")
                 .child(userId).child("Timebank").setValue(newTimebankId);
+
         FirebaseDatabase.getInstance().getReference("Timebanks")
                 .child(newTimebankId).child("Members").push().setValue(userId);
     }

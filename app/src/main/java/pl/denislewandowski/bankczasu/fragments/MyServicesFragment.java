@@ -1,5 +1,7 @@
 package pl.denislewandowski.bankczasu.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,11 +20,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.TimebankData;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.TimebankServicesAdapter;
 
 public class MyServicesFragment extends Fragment {
@@ -80,23 +85,40 @@ public class MyServicesFragment extends Fragment {
     }
 
     private void getUserServices() {
-        FirebaseDatabase.getInstance().getReference("Timebanks")
-                .child(timebankId).child("Services").addValueEventListener(new ValueEventListener() {
+        TimebankViewModel timebankViewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        timebankViewModel.timebankData.observe(getActivity(), new Observer<TimebankData>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (serviceNames.contains(ds.getKey()))
-                        services.add(ds.getValue(Service.class));
-                }
+            public void onChanged(@Nullable TimebankData timebankData) {
+                List<Service> allServices = timebankData.getServices();
+                services = allServices;
                 adapter = new TimebankServicesAdapter(services, getContext());
                 recyclerView.setAdapter(adapter);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
         });
     }
+
+//    private void getUserServices() {
+//        FirebaseDatabase.getInstance().getReference("Timebanks")
+//                .child(timebankId).child("Services").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                services.clear();
+//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    if (serviceNames.contains(ds.getKey())) {
+//                        Service service = ds.getValue(Service.class);
+//                        if (service.getClientId().equals(""))
+//                            services.add(ds.getValue(Service.class));
+//                    }
+//                }
+//                adapter = new TimebankServicesAdapter(services, getContext());
+//                recyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//    }
 }
 
 

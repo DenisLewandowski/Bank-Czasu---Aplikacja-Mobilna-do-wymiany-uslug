@@ -3,28 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/oceanBlue"
+    android:background="@drawable/nav_drawer_gradient"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
+        android:id="@+id/nav_header_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
-        <!--android:src="@drawable/bank_czasu_logo" -->
-
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/oval_background_white"
+        android:scaleType="center"
+        android:src="@drawable/ic_user" />
 
     <TextView
-        android:id="@+id/app_name"
+        android:id="@+id/nav_drawer_user_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
+        android:layout_below="@id/nav_header_image"
         android:layout_alignParentStart="true"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -33,23 +35,25 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_name"
-        android:text="@string/time_currency" />
+        android:layout_below="@id/nav_drawer_user_login"
+        android:text="@string/time_currency"
+        android:textStyle="italic" />
+
     <TextView
         android:id="@+id/time_currency_value_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/nav_drawer_user_login"
         android:layout_marginStart="6dp"
         android:layout_toEndOf="@id/textView"
-        android:layout_below="@id/app_name"
-        />
+        android:textStyle="italic" />
 
     <ImageView
         android:layout_width="18dp"
         android:layout_height="18dp"
+        android:layout_below="@id/nav_drawer_user_login"
         android:layout_marginStart="2dp"
-        android:layout_below="@id/app_name"
         android:layout_toEndOf="@id/time_currency_value_header"
-        android:src="@drawable/ic_timecurrency"/>
+        android:src="@drawable/ic_timecurrency" />
 
 </RelativeLayout>
