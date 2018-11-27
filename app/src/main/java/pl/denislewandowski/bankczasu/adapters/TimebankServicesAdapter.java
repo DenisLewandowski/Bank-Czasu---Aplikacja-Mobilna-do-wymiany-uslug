@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import pl.denislewandowski.bankczasu.CategoryUtils;
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
 import pl.denislewandowski.bankczasu.fragments.EditServiceFragment;
 import pl.denislewandowski.bankczasu.fragments.ServiceDescriptionFragment;
 

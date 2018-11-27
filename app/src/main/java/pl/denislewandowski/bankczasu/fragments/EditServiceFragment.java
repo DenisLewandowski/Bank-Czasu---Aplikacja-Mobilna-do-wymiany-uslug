@@ -1,7 +1,6 @@
 package pl.denislewandowski.bankczasu.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,20 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.FirebaseRepository;
-import pl.denislewandowski.bankczasu.Service;
-import pl.denislewandowski.bankczasu.TimeCurrency;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.model.TimeCurrency;
 import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.CategorySpinnerAdapter;
 import pl.denislewandowski.bankczasu.adapters.TimeCurrencySpinnerAdapter;
 
@@ -46,18 +39,19 @@ public class EditServiceFragment extends Fragment {
     private Button editButton, deleteButton;
     private Service service;
     private String timebankId;
+    private TimebankViewModel viewModel;
     FirebaseRepository repository;
 
-
-    private DatabaseReference timebanksReference;
-    private DatabaseReference userReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         service = (Service) getArguments().getSerializable("SERVICE");
 
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        timebankId = sharedPreferences.getString("CURRENT_TIMEBANK", "null");
+//        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+//        timebankId = sharedPreferences.getString("CURRENT_TIMEBANK", "null");
+        viewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        timebankId = viewModel.timebankData.getValue().getId();
+
         repository = new FirebaseRepository(getActivity());
 
         return inflater.inflate(R.layout.fragment_edit_service, container, false);
@@ -76,9 +70,6 @@ public class EditServiceFragment extends Fragment {
         editButton = getView().findViewById(R.id.edit_service_button);
         deleteButton = getView().findViewById(R.id.delete_service_button);
 
-        timebanksReference = FirebaseDatabase.getInstance().getReference("Timebanks").child(timebankId);
-        userReference = FirebaseDatabase.getInstance()
-                .getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         initList();
         adapter = new TimeCurrencySpinnerAdapter(getContext(), timeCurrencyList);
         timeCurrencySpinner.setAdapter(adapter);

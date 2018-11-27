@@ -2,7 +2,10 @@ package pl.denislewandowski.bankczasu.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +16,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.UserItem;
+import pl.denislewandowski.bankczasu.fragments.PrivateMessageFragment;
+import pl.denislewandowski.bankczasu.model.UserItem;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
     private List<UserItem> userList;
@@ -54,18 +59,36 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView userNameTextView, currencyValueTextView;
-        ImageView userImageView;
+        ImageView userImageView, sendImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.user_name);
             currencyValueTextView = itemView.findViewById(R.id.time_currency_value);
             userImageView = itemView.findViewById(R.id.user_image);
+            sendImage = itemView.findViewById(R.id.send_message);
         }
 
-        public void bindView(UserItem user) {
+        public void bindView(final UserItem user) {
             userNameTextView.setText(user.getName());
             currencyValueTextView.setText(String.valueOf(user.getTimeCurrency()));
+
+            sendImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                   PrivateMessageFragment fragment = new PrivateMessageFragment();
+                   Bundle bundle = new Bundle();
+                   bundle.putSerializable("USER_ITEM", user);
+                   fragment.setArguments(bundle);
+                   ft.replace(R.id.content_main, fragment);
+                   ft.addToBackStack(null);
+                   ft.commit();
+                }
+            });
+            if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                sendImage.setVisibility(View.GONE);
+            }
             setUserImage(user.getId());
         }
 

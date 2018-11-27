@@ -1,6 +1,5 @@
 package pl.denislewandowski.bankczasu.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -24,13 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
-import pl.denislewandowski.bankczasu.TimebankData;
-import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.ServicesFragmentPagerAdapter;
 import pl.denislewandowski.bankczasu.dialogs.LeaveTimebankDialogFragment;
 import pl.denislewandowski.bankczasu.dialogs.TimebankCodeDialogFragment;

@@ -1,14 +1,19 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.model;
 
-public class UserItem {
+import java.io.Serializable;
+import java.util.List;
+
+public class UserItem implements Serializable {
     private String id;
     private String name;
     private int timeCurrency;
+    private List<String> serviceIds;
 
-    public UserItem(String id, String name, int timeCurrency) {
+    public UserItem(String id, String name, int timeCurrency, List<String> serviceIds) {
         this.id = id;
         this.name = name;
         this.timeCurrency = timeCurrency;
+        this.serviceIds = serviceIds;
     }
 
     public String getId() {
@@ -33,5 +38,13 @@ public class UserItem {
 
     public void setTimeCurrency(int timeCurrency) {
         this.timeCurrency = timeCurrency;
+    }
+
+    public List<String> getServiceIds() {
+        return serviceIds;
+    }
+
+    public void setServiceIds(List<String> serviceIds) {
+        this.serviceIds = serviceIds;
     }
 }

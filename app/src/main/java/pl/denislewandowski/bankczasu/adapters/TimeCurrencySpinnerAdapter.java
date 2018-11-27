@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pl.denislewandowski.bankczasu.TimeCurrency;
+import pl.denislewandowski.bankczasu.model.TimeCurrency;
 import pl.denislewandowski.bankczasu.R;
 
 public class TimeCurrencySpinnerAdapter extends ArrayAdapter<TimeCurrency> {

@@ -89,4 +89,7 @@
     <string name="exit_timebank_description">Opuść aktualny bank czasu - jeśli opuścisz bank czasu przepadną wszystkie Twoje oferty usług i czasowaltua. Czy na pewno chcesz opuścić bank czasu?</string>
     <string name="no">Nie</string>
     <string name="leave">Opuść bank czasu</string>
+    <string name="join_to_timbank_message">Dołącz do banku czasu, aby korzystać z chatu</string>
+    <string name="type_message">Napisz wiadomość...</string>
+    <string name="group_chat">Chat grupowy</string>
 </resources>

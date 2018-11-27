@@ -1,5 +1,7 @@
 package pl.denislewandowski.bankczasu.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -19,17 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.RecyclerItemTouchHelper;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.model.TimebankData;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.ServicesToDoAdapter;
 import pl.denislewandowski.bankczasu.dialogs.ConfirmServiceDialogFragment;
 import pl.denislewandowski.bankczasu.dialogs.ReturnCurrencyBackDialogFragment;
@@ -72,30 +72,26 @@ public class ServicesToDoFragment extends Fragment implements RecyclerItemTouchH
 
 
     private void getAllServicesToDo() {
-        FirebaseDatabase.getInstance().getReference("Timebanks").child(timebankId).child("Services")
-                .orderByChild("clientId").startAt("")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        services.clear();
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Service service = ds.getValue(Service.class);
-                                if (service.getServiceOwnerId().equals(currentUserId) || service.getClientId().equals(currentUserId))
-                                    if (!service.getClientId().equals(""))
-                                        services.add(ds.getValue(Service.class));
-                            }
-                        }
-                        progressBar.hide();
-                        adapter = new ServicesToDoAdapter(services, getContext());
-                        recyclerView.setAdapter(adapter);
+        TimebankViewModel viewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        viewModel.timebankData.observe(getActivity(), new Observer<TimebankData>() {
+            @Override
+            public void onChanged(@Nullable TimebankData timebankData) {
+                List<Service> allServices = timebankData.getServices();
+                for (Service s : allServices) {
+                    if (s.getServiceOwnerId().equals(currentUserId) && !s.getClientId().equals("")) {
+                        services.add(s);
+                        continue;
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    if(s.getClientId().equals(currentUserId)) {
+                        services.add(s);
                     }
-                });
+                }
+                progressBar.hide();
+                adapter = new ServicesToDoAdapter(services, getContext());
+                recyclerView.setAdapter(adapter);
+            }
+        });
+
     }
 
     private void attachItemTouchHelper(RecyclerView recyclerView) {
@@ -107,12 +103,10 @@ public class ServicesToDoFragment extends Fragment implements RecyclerItemTouchH
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof ServicesToDoAdapter.ViewHolder) {
-            String name = services.get(viewHolder.getAdapterPosition()).getName();
-
             final Service deletedItem = services.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
-            if(currentUserId.equals(deletedItem.getServiceOwnerId())) {
+            if (currentUserId.equals(deletedItem.getServiceOwnerId())) {
                 final ReturnCurrencyBackDialogFragment dialog = ReturnCurrencyBackDialogFragment.newInstance(deletedItem);
                 dialog.show(getChildFragmentManager(), "DIALOG");
                 getChildFragmentManager().executePendingTransactions();
@@ -133,7 +127,7 @@ public class ServicesToDoFragment extends Fragment implements RecyclerItemTouchH
                 dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        if(!dialog.serviceConfirmed) {
+                        if (!dialog.serviceConfirmed) {
                             adapter.restoreItem(deletedItem, deletedIndex);
                         }
                     }

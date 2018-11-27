@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
 
 public class ReturnCurrencyBackDialogFragment extends DialogFragment {
 

@@ -200,6 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                                         .child(user.getUid());
                                 dr.child("timeCurrency").setValue(4);
                                 dr.child("Name").setValue(user.getDisplayName());
+                                dr.child("Timebank").setValue("");
                             }
                             finish();
                         } else {

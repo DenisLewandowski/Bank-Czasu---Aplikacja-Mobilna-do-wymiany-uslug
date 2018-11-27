@@ -1,10 +1,8 @@
 package pl.denislewandowski.bankczasu.dialogs;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
 
 public class LeaveTimebankDialogFragment extends DialogFragment {
 
@@ -76,7 +73,7 @@ public class LeaveTimebankDialogFragment extends DialogFragment {
                 }
                 deleteServicesFromTimebank();
                 userRef.child("Services").removeValue();
-                userRef.child("Timebank").removeValue();
+                userRef.child("Timebank").setValue("");
 
                 timebankRef.child("Members")
                         .addListenerForSingleValueEvent(new ValueEventListener() {

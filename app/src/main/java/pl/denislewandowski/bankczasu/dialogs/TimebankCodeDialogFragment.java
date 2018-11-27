@@ -1,5 +1,6 @@
 package pl.denislewandowski.bankczasu.dialogs;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -20,7 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+
 import pl.denislewandowski.bankczasu.R;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 
 public class TimebankCodeDialogFragment extends DialogFragment {
 
@@ -59,18 +63,8 @@ public class TimebankCodeDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase.getInstance().getReference("Users").child(userId).child("Timebank")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        timebankCodeTextView.setText(dataSnapshot.getValue(String.class));
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+        TimebankViewModel viewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        timebankCodeTextView.setText(viewModel.timebankData.getValue().getId());
     }
 }

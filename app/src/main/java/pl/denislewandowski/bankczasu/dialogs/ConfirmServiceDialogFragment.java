@@ -1,5 +1,6 @@
 package pl.denislewandowski.bankczasu.dialogs;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -15,12 +16,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import pl.denislewandowski.bankczasu.FirebaseRepository;
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 
 public class ConfirmServiceDialogFragment extends DialogFragment {
 
@@ -28,7 +30,9 @@ public class ConfirmServiceDialogFragment extends DialogFragment {
     private Button backCurrencyButton;
     private String userId;
     private String timebankId;
+    private FirebaseRepository repository;
     private Service service;
+    private TimebankViewModel viewModel;
     public boolean serviceConfirmed = false;
 
     public static ConfirmServiceDialogFragment newInstance(Service service) {
@@ -48,14 +52,15 @@ public class ConfirmServiceDialogFragment extends DialogFragment {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         timebankId = sharedPreferences.getString("CURRENT_TIMEBANK", "timebankID");
-
+        repository = new FirebaseRepository(getActivity());
         service = (Service) getArguments().getSerializable("SERVICE");
+        viewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
 
 
         backCurrencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                giveBackCurrency(service);
+                repository.timeCurrencyReturn(service);
                 deleteServiceFromDatabase(service);
             }
         });
@@ -73,25 +78,6 @@ public class ConfirmServiceDialogFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-    }
-
-    private void giveBackCurrency(final Service service) {
-        final DatabaseReference timeCurrencyRef = FirebaseDatabase.getInstance()
-                .getReference("Users").child(service.getServiceOwnerId()).child("timeCurrency");
-        timeCurrencyRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    int timeCurrency = dataSnapshot.getValue(Integer.class);
-                    timeCurrencyRef.setValue(timeCurrency + service.getTimeCurrencyValue());
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-
     }
 
     private void deleteServiceFromDatabase(final Service service) {

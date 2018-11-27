@@ -34,9 +34,11 @@ import java.util.List;
 
 import pl.denislewandowski.bankczasu.FirebaseRepository;
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
-import pl.denislewandowski.bankczasu.TimebankData;
+import pl.denislewandowski.bankczasu.model.Chat;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.model.TimebankData;
 import pl.denislewandowski.bankczasu.TimebankViewModel;
+import pl.denislewandowski.bankczasu.model.UserItem;
 import pl.denislewandowski.bankczasu.dialogs.AboutApplicationDialogFragment;
 import pl.denislewandowski.bankczasu.fragments.MessagesFragment;
 import pl.denislewandowski.bankczasu.fragments.MyProfileFragment;
@@ -213,11 +215,17 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_messages: {
-                fragment = new MessagesFragment();
+                if (!timebankId.equals(""))
+                    fragment = new MessagesFragment();
+                else
+                    fragment = new UserWithoutTimebankFragment();
                 break;
             }
             case R.id.nav_todo: {
-                fragment = new ServicesToDoFragment();
+                if (!timebankId.equals(""))
+                    fragment = new ServicesToDoFragment();
+                else
+                    fragment = new UserWithoutTimebankFragment();
                 break;
             }
             case R.id.nav_myprofile: {
@@ -245,7 +253,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setTimebankFragment(String timebankId) {
-        if (timebankId == null) {
+        if (timebankId.equals("")) {
             ft = getSupportFragmentManager().beginTransaction();
             progressBar.hide();
             ft.replace(R.id.content_main, new UserWithoutTimebankFragment(), "TIMEBANK_FRAGMENT");
@@ -260,6 +268,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
+    }
+
     public void addCurrentTimebankIdToSharedPreferences() {
         FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Timebank")
@@ -272,8 +286,10 @@ public class MainActivity extends AppCompatActivity
                         editor.putString("CURRENT_TIMEBANK", timebankId);
                         editor.commit();
                         //TODO : edytować to żeby nie bylo w shared i nazwać lepiej
-                        if (timebankId != null)
+                        if (timebankId != null) {
                             setTimebankDataInViewModel();
+                            setUsersInViewModel();
+                        }
                     }
 
                     @Override
@@ -289,6 +305,7 @@ public class MainActivity extends AppCompatActivity
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Service> services = new ArrayList<>();
                         List<String> members = new ArrayList<>();
+                        List<Chat> chatList = new ArrayList<>();
 
                         for (DataSnapshot ds : dataSnapshot.child("Services").getChildren()) {
                             services.add(ds.getValue(Service.class));
@@ -296,13 +313,42 @@ public class MainActivity extends AppCompatActivity
                         for (DataSnapshot ds : dataSnapshot.child("Members").getChildren()) {
                             members.add(ds.getValue(String.class));
                         }
-                        timebankViewModel.timebankData.setValue(new TimebankData(timebankId, members, services));
+                        for (DataSnapshot ds : dataSnapshot.child("Messages").getChildren()) {
+                            chatList.add(ds.getValue(Chat.class));
+                        }
+                        timebankViewModel.timebankData.setValue(new TimebankData(timebankId, members, services, chatList));
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
+    }
+
+    private void setUsersInViewModel() {
+        final List<UserItem> userItems = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (ds.child("Timebank").getValue(String.class).equals(timebankId)) {
+                        List<String> userIds = new ArrayList<>();
+                        for (DataSnapshot ds2 : ds.child("Services").getChildren()) {
+                            userIds.add(ds2.getValue(String.class));
+                        }
+
+                        UserItem userItem = new UserItem(ds.getKey(), ds.child("Name").getValue(String.class),
+                                ds.child("timeCurrency").getValue(Integer.class), userIds);
+                        userItems.add(userItem);
+                    }
+                }
+                timebankViewModel.usersData.setValue(userItems);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
 }

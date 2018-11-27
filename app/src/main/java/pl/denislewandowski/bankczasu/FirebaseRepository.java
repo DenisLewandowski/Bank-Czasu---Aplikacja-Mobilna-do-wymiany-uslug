@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import pl.denislewandowski.bankczasu.model.Chat;
+import pl.denislewandowski.bankczasu.model.Service;
+
 public class FirebaseRepository {
     private DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Users");
     private DatabaseReference timebankReference = FirebaseDatabase.getInstance().getReference("Timebanks");
@@ -119,4 +122,20 @@ public class FirebaseRepository {
         activity.onBackPressed();
     }
 
+    public void timeCurrencyReturn(final Service service) {
+        final DatabaseReference timeCurrencyRef = FirebaseDatabase.getInstance()
+                .getReference("Users").child(service.getServiceOwnerId()).child("timeCurrency");
+        timeCurrencyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    int timeCurrency = dataSnapshot.getValue(Integer.class);
+                    timeCurrencyRef.setValue(timeCurrency + service.getTimeCurrencyValue());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 }

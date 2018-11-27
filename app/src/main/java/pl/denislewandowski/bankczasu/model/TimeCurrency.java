@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.model;
 
 public class TimeCurrency {
     private int timeCurrencyValue;

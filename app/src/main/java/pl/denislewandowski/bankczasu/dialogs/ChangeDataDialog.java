@@ -17,7 +17,7 @@ public class ChangeDataDialog {
     public static final int CHANGE_PASSWORD_DIALOG = 3;
     private final int DIALOG_TYPE;
 
-    private Context ctx;
+    private Context context;
     private LayoutInflater layoutInflater;
 
     private int dialogTitleId;
@@ -25,7 +25,7 @@ public class ChangeDataDialog {
     public AlertDialog dialog;
 
     public ChangeDataDialog(Context ctx, LayoutInflater layoutInflater, int DIALOG_TYPE) {
-        this.ctx = ctx;
+        this.context = ctx;
         this.layoutInflater = layoutInflater;
         this.DIALOG_TYPE = DIALOG_TYPE;
         switch (DIALOG_TYPE) {
@@ -48,7 +48,7 @@ public class ChangeDataDialog {
     }
 
     public void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View mView;
         if(DIALOG_TYPE != CHANGE_PASSWORD_DIALOG) {
             mView = layoutInflater.inflate(R.layout.dialog_change_data, null);

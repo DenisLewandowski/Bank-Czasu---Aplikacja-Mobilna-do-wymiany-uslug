@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,10 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +24,8 @@ import java.util.List;
 import java.util.UUID;
 
 import pl.denislewandowski.bankczasu.FirebaseRepository;
-import pl.denislewandowski.bankczasu.Service;
-import pl.denislewandowski.bankczasu.TimeCurrency;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.model.TimeCurrency;
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.adapters.CategorySpinnerAdapter;
 import pl.denislewandowski.bankczasu.adapters.TimeCurrencySpinnerAdapter;

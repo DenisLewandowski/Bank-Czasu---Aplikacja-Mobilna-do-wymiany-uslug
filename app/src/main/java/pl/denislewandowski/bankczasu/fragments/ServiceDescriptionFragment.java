@@ -1,5 +1,6 @@
 package pl.denislewandowski.bankczasu.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,10 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -26,7 +24,9 @@ import java.util.Map;
 
 import pl.denislewandowski.bankczasu.CategoryUtils;
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
+import pl.denislewandowski.bankczasu.model.UserItem;
 
 public class ServiceDescriptionFragment extends Fragment {
     private Service service;
@@ -110,22 +110,11 @@ public class ServiceDescriptionFragment extends Fragment {
     }
 
     private void getServiceOwnerName() {
-        FirebaseDatabase.getInstance().getReference("Users").child(service.getServiceOwnerId())
-                .child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String userName;
-                if(dataSnapshot.exists()) {
-                    userName = dataSnapshot.getValue(String.class);
-                    serviceUserName.setText(userName);
-                }
+        TimebankViewModel viewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        for(UserItem user : viewModel.usersData.getValue()) {
+            if(user.getId().equals(service.getServiceOwnerId())) {
+                serviceUserName.setText(user.getName());
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
+        }
     }
 }

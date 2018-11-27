@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Random;
 
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
 
 public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapter.ViewHolder> {
     private List<Service> services;
@@ -140,7 +140,6 @@ public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapte
         }
 
         private void setOtherUserImage() {
-
             int randomNumber = new Random().nextInt(100);
             String url = String.format("https://randomuser.me/api/portraits/men/%d.jpg", randomNumber);
             Glide.with(context.getApplicationContext())

@@ -69,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     ref.child("timeCurrency").setValue(4);
                     ref.child("Name").setValue(name);
+                    ref.child("Timebank").setValue("");
                     Toast.makeText(SignUpActivity.this, "Rejestracja przebiegła pomyślnie!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {

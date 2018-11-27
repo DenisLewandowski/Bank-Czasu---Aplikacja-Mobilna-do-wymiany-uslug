@@ -1,5 +1,7 @@
 package pl.denislewandowski.bankczasu.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
-import pl.denislewandowski.bankczasu.Service;
+import pl.denislewandowski.bankczasu.model.Service;
+import pl.denislewandowski.bankczasu.model.TimebankData;
+import pl.denislewandowski.bankczasu.TimebankViewModel;
 import pl.denislewandowski.bankczasu.adapters.TimebankServicesAdapter;
 
 public class TimebankServicesFragment extends Fragment {
@@ -63,7 +67,7 @@ public class TimebankServicesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 timebankId = (String) dataSnapshot.getValue();
-                getServicesFromDatabase();
+                subscribeServices();
             }
 
             @Override
@@ -72,27 +76,16 @@ public class TimebankServicesFragment extends Fragment {
         });
     }
 
-    private void getServicesFromDatabase() {
-        if (timebankId != null) {
-            FirebaseDatabase.getInstance().getReference("Timebanks").child(timebankId).child("Services")
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            services.clear();
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Service service = ds.getValue(Service.class);
-                                if(!services.contains(service) && service.getClientId().equals(""))
-                                services.add(ds.getValue(Service.class));
-                            }
-                            progressBar.hide();
-                            adapter = new TimebankServicesAdapter(services, getContext());
-                            recyclerView.setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
-        }
+    private void subscribeServices() {
+        TimebankViewModel timebankViewModel = ViewModelProviders.of(getActivity()).get(TimebankViewModel.class);
+        timebankViewModel.timebankData.observe(getActivity(), new Observer<TimebankData>() {
+            @Override
+            public void onChanged(@Nullable TimebankData timebankData) {
+                services = timebankData.getServices();
+                adapter = new TimebankServicesAdapter(services, getContext());
+                recyclerView.setAdapter(adapter);
+                progressBar.hide();
+            }
+        });
     }
 }

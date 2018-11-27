@@ -1,4 +1,4 @@
-package pl.denislewandowski.bankczasu;
+package pl.denislewandowski.bankczasu.model;
 
 import com.google.firebase.database.Exclude;
 
