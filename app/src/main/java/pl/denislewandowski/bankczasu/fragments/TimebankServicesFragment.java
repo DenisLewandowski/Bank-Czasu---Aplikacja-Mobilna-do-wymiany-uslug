@@ -14,14 +14,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import pl.denislewandowski.bankczasu.R;
@@ -36,44 +33,27 @@ public class TimebankServicesFragment extends Fragment {
     private List<Service> services;
     private ContentLoadingProgressBar progressBar;
     private TimebankServicesAdapter adapter;
-    private String userId;
-    private String timebankId;
+    private TextView emptyListTextView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         return inflater.inflate(R.layout.fragment_timebank_services, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = getView().findViewById(R.id.recycler_view_needed);
+        recyclerView = view.findViewById(R.id.recycler_view_needed);
         progressBar = getView().findViewById(R.id.progress_bar);
+        emptyListTextView = getView().findViewById(R.id.empty_view);
 
         services = new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-        getTimebankId();
-    }
-
-    private void getTimebankId() {
-        FirebaseDatabase.getInstance().getReference("Users")
-                .child(userId).child("Timebank").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                timebankId = (String) dataSnapshot.getValue();
-                subscribeServices();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+        subscribeServices();
     }
 
     private void subscribeServices() {
@@ -81,10 +61,29 @@ public class TimebankServicesFragment extends Fragment {
         timebankViewModel.timebankData.observe(getActivity(), new Observer<TimebankData>() {
             @Override
             public void onChanged(@Nullable TimebankData timebankData) {
-                services = timebankData.getServices();
-                adapter = new TimebankServicesAdapter(services, getContext());
-                recyclerView.setAdapter(adapter);
-                progressBar.hide();
+                if (timebankData != null) {
+                    services.clear();
+                    for(Service s : timebankData.getServices()) {
+                        if(s.getClientId().isEmpty() && !services.contains(s)) {
+                            services.add(s);
+                        }
+                    }
+
+                    Collections.sort(services, new Comparator<Service>(){
+                        public int compare(Service obj1, Service obj2) {
+                            return obj1.getName().compareToIgnoreCase(obj2.getName()); // To compare string values
+                        }
+                    });
+
+                    adapter = new TimebankServicesAdapter(services, getContext(), TimebankServicesAdapter.SERVICES);
+                    recyclerView.setAdapter(adapter);
+                    progressBar.hide();
+                }
+
+                if (services.isEmpty())
+                    emptyListTextView.setVisibility(View.VISIBLE);
+                else
+                    emptyListTextView.setVisibility(View.INVISIBLE);
             }
         });
     }

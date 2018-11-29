@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -44,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import pl.denislewandowski.bankczasu.ImageRotationUtil;
 import pl.denislewandowski.bankczasu.dialogs.ChangeDataDialog;
@@ -57,19 +55,17 @@ public class MyProfileFragment extends Fragment {
     private static final int PICK_FROM_FILE = 1;
     private static final int FROM_CAMERA = 2;
     private FirebaseUser user;
-    private RelativeLayout changeLoginView, changeEmailView, changePasswordView, changePhotoView;
     private TextView userLogin, userEmail;
     private ImageView userImage;
     private TextView timeCurrencyValueTextView;
 
-    private DatabaseReference db;
     private StorageReference storage;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        storage = FirebaseStorage.getInstance().getReference(user.getUid());
+        storage = FirebaseStorage.getInstance().getReference(user.getUid() + ".jpg");
 
         return inflater.inflate(R.layout.fragment_my_profile, container, false);
     }
@@ -78,19 +74,19 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.my_profile);
+        Objects.requireNonNull(getActivity()).setTitle(R.string.my_profile);
 
-        userLogin = getView().findViewById(R.id.userLoginTextView);
+        userLogin = Objects.requireNonNull(getView()).findViewById(R.id.userLoginTextView);
         userEmail = getView().findViewById(R.id.userEmailTextView);
         userImage = getView().findViewById(R.id.userImageView);
         timeCurrencyValueTextView = getView().findViewById(R.id.time_currency_value);
 
         setUpUserInformation();
 
-        changeLoginView = getView().findViewById(R.id.change_login_view);
-        changeEmailView = getView().findViewById(R.id.change_email_view);
-        changePasswordView = getView().findViewById(R.id.change_password_view);
-        changePhotoView = getView().findViewById(R.id.change_photo_view);
+        RelativeLayout changeLoginView = getView().findViewById(R.id.change_login_view);
+        RelativeLayout changeEmailView = getView().findViewById(R.id.change_email_view);
+        RelativeLayout changePasswordView = getView().findViewById(R.id.change_password_view);
+        RelativeLayout changePhotoView = getView().findViewById(R.id.change_photo_view);
 
         changeLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,11 +105,11 @@ public class MyProfileFragment extends Fragment {
         changePasswordView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createDialog(ChangeDataDialog.CHANGE_PASSWORD_DIALOG);
+         createDialog(ChangeDataDialog.CHANGE_PASSWORD_DIALOG);
             }
         });
 
-        db = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users");
         db.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -292,7 +288,7 @@ public class MyProfileFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, FROM_CAMERA);
         }
     }

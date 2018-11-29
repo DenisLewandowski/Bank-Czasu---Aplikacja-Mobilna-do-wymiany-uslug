@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
+import java.util.Objects;
 
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.fragments.PrivateMessageFragment;
@@ -57,11 +58,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView userNameTextView, currencyValueTextView;
         ImageView userImageView, sendImage;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.user_name);
             currencyValueTextView = itemView.findViewById(R.id.time_currency_value);
@@ -69,7 +70,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             sendImage = itemView.findViewById(R.id.send_message);
         }
 
-        public void bindView(final UserItem user) {
+        void bindView(final UserItem user) {
             userNameTextView.setText(user.getName());
             currencyValueTextView.setText(String.valueOf(user.getTimeCurrency()));
 
@@ -86,14 +87,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                    ft.commit();
                 }
             });
-            if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            if(user.getId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
                 sendImage.setVisibility(View.GONE);
             }
             setUserImage(user.getId());
         }
 
         private void setUserImage(String userId) {
-            StorageReference storage = FirebaseStorage.getInstance().getReference(userId);
+            StorageReference storage = FirebaseStorage.getInstance().getReference(userId + ".jpg");
             storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -104,6 +105,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 }
             });
         }
+
     }
 
 }

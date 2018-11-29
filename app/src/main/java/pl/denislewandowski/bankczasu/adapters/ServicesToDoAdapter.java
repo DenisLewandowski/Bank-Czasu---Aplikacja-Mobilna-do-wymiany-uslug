@@ -25,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
-import java.util.Random;
 
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.model.Service;
@@ -41,15 +40,16 @@ public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapte
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_service_to_do, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Service service = services.get(position);
         holder.bindView(service);
     }
@@ -70,7 +70,7 @@ public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapte
         ImageView leftBackgroundImageView, rightBackgroundImageView;
         public boolean isCurrentUserServiceOwner;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             currentUserServiceNameTextView = itemView.findViewById(R.id.service_name_current);
             otherUserServiceNameTextView = itemView.findViewById(R.id.service_name_other);
@@ -91,18 +91,19 @@ public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapte
 
         void bindView(Service service) {
             timeCurrencyTextView.setText(String.valueOf(service.getTimeCurrencyValue()));
-            setCurrentUserImage();
-            setOtherUserImage();
+            setUserImage(currentUser.getUid(), currentUserImageView);
             isCurrentUserServiceOwner = isCurrentUserService(service);
             if (isCurrentUserService(service)) {
                 leftBackgroundImageView.setVisibility(View.INVISIBLE);
                 leftBackgroundTextView.setVisibility(View.INVISIBLE);
+                setUserImage(service.getClientId(), otherUserImageView);
                 currentUserServiceNameTextView.setText(service.getName());
                 setLeftArrowImage();
                 isDoneTextView.setText(context.getString(R.string.swipe_to_cancel));
                 setUserName(service.getServiceOwnerId(), currentUserName);
                 setUserName(service.getClientId(), otherUserName);
             } else {
+                setUserImage(service.getServiceOwnerId(), otherUserImageView);
                 rightBackgroundImageView.setVisibility(View.INVISIBLE);
                 rightBackgroundTextView.setVisibility(View.INVISIBLE);
                 otherUserServiceNameTextView.setText(service.getName());
@@ -126,37 +127,25 @@ public class ServicesToDoAdapter extends RecyclerView.Adapter<ServicesToDoAdapte
                     });
         }
 
-        private void setCurrentUserImage() {
-            StorageReference storage = FirebaseStorage.getInstance().getReference(currentUser.getUid());
+        private void setUserImage(String userId, final ImageView imageView) {
+            StorageReference storage = FirebaseStorage.getInstance().getReference(userId + ".jpg");
             storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(context.getApplicationContext())
                             .load(uri)
                             .apply(RequestOptions.circleCropTransform())
-                            .into(currentUserImageView);
+                            .into(imageView);
                 }
             });
-        }
-
-        private void setOtherUserImage() {
-            int randomNumber = new Random().nextInt(100);
-            String url = String.format("https://randomuser.me/api/portraits/men/%d.jpg", randomNumber);
-            Glide.with(context.getApplicationContext())
-                    .load(url)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(otherUserImageView);
         }
 
         private void setLeftArrowImage() {
             arrowImageView.setImageResource(R.drawable.ic_arrow_left);
         }
 
-        public boolean isCurrentUserService(Service service) {
-            if (currentUser.getUid().equals(service.getServiceOwnerId()))
-                return true;
-            else
-                return false;
+        boolean isCurrentUserService(Service service) {
+            return currentUser.getUid().equals(service.getServiceOwnerId());
         }
     }
 

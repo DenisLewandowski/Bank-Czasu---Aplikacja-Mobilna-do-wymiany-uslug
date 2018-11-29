@@ -33,7 +33,6 @@ public class TimebankFragment extends Fragment {
     private FloatingActionButton fab;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private String timebankId;
 
     @Nullable
     @Override
@@ -43,6 +42,7 @@ public class TimebankFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(new ServicesFragmentPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 

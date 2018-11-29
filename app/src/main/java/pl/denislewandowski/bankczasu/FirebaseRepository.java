@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import pl.denislewandowski.bankczasu.model.Chat;
 import pl.denislewandowski.bankczasu.model.Service;
 
 public class FirebaseRepository {
@@ -47,11 +46,8 @@ public class FirebaseRepository {
                 });
     }
 
-    public void setUserImage(final ImageView userImage) {
-        StorageReference storage = FirebaseStorage.getInstance().getReference(userId);
-        Glide.with(activity)
-                .load(R.drawable.ic_user)
-                .into(userImage);
+    public void setCurrentUserImage(final ImageView userImage) {
+        StorageReference storage = FirebaseStorage.getInstance().getReference(userId + ".jpg");
         storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -128,11 +124,12 @@ public class FirebaseRepository {
         timeCurrencyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     int timeCurrency = dataSnapshot.getValue(Integer.class);
                     timeCurrencyRef.setValue(timeCurrency + service.getTimeCurrencyValue());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }

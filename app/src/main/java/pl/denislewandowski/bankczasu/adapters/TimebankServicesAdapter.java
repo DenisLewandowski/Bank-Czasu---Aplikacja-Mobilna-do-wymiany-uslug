@@ -31,10 +31,16 @@ import pl.denislewandowski.bankczasu.fragments.ServiceDescriptionFragment;
 public class TimebankServicesAdapter extends RecyclerView.Adapter<TimebankServicesAdapter.ViewHolder> {
     private List<Service> servicesNeededList;
     private Context context;
+    private int option;
+    private String currentUserId;
+    public static final int SERVICES = 1;
+    public static final int MY_SERVICES = 2;
 
-    public TimebankServicesAdapter(List<Service> servicesNeededList, Context context) {
+    public TimebankServicesAdapter(List<Service> servicesNeededList, Context context, int OPTION) {
         this.servicesNeededList = servicesNeededList;
         this.context = context;
+        this.option = OPTION;
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -57,7 +63,7 @@ public class TimebankServicesAdapter extends RecyclerView.Adapter<TimebankServic
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("SERVICE", service);
 
-                if(service.getServiceOwnerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                if(service.getServiceOwnerId().equals(currentUserId)) {
                     fragment = new EditServiceFragment();
                 } else {
                     fragment = new ServiceDescriptionFragment();
@@ -99,6 +105,11 @@ public class TimebankServicesAdapter extends RecyclerView.Adapter<TimebankServic
                 Glide.with(context).load(CategoryUtils.imageResourceIds[service.getCategory()])
                         .into(categoryImageView);
             }
+            if(option == SERVICES) {
+               if(service.getServiceOwnerId().equals(currentUserId))
+                   parentLayout.setAlpha((float) 0.60);
+            }
+
             getServiceOwnerName(service);
         }
 

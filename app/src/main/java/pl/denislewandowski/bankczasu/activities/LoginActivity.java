@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,8 +32,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import pl.denislewandowski.bankczasu.EmailEditText;
 import pl.denislewandowski.bankczasu.LoginValidator;
@@ -134,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signInWithGoogle() {
         if (checkConnection()) {
-            progressBar.setVisibility(View.VISIBLE);
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
         } else {
@@ -178,7 +174,9 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
             } catch (ApiException e) {
                 Log.w(TAG, "Logowanie przez google nieudane", e);
             }
@@ -205,7 +203,6 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 });

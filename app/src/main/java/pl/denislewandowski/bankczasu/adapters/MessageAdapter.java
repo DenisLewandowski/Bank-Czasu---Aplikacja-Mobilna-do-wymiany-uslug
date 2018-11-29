@@ -126,7 +126,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
 
         private void setUserImage(String userId) {
-            StorageReference storage = FirebaseStorage.getInstance().getReference(userId);
+            StorageReference storage = FirebaseStorage.getInstance().getReference(userId + ".jpg");
             storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

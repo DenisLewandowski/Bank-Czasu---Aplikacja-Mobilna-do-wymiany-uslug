@@ -58,9 +58,9 @@ public class MessagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(getString(R.string.group_chat));
 
-        recyclerView = getView().findViewById(R.id.message_recycler_view);
-        sendMessageButton = getView().findViewById(R.id.send_message_button);
-        messageTextView = getView().findViewById(R.id.text_send_message);
+        recyclerView = view.findViewById(R.id.message_recycler_view);
+        sendMessageButton = view.findViewById(R.id.send_message_button);
+        messageTextView = view.findViewById(R.id.text_send_message);
 
         getMessages();
         recyclerView.setHasFixedSize(true);
@@ -71,6 +71,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 sendMessage();
+                messageTextView.setText("");
             }
         });
     }
@@ -81,7 +82,6 @@ public class MessagesFragment extends Fragment {
         chat.setMessage(messageTextView.getText().toString());
         chat.setSender(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.push().setValue(chat);
-        messageTextView.clearComposingText();
     }
 
     private void getMessages() {

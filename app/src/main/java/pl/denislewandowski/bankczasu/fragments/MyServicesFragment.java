@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,6 +30,7 @@ public class MyServicesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private List<Service> services;
+    private TextView emptyListTextView;
     private TimebankServicesAdapter adapter;
     private String userId;
     FirebaseAuth mAuth;
@@ -48,6 +50,7 @@ public class MyServicesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recycler_view_myservices);
+        emptyListTextView = getView().findViewById(R.id.empty_view);
 
         getUserServices();
 
@@ -62,14 +65,19 @@ public class MyServicesFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TimebankData timebankData) {
                 List<Service> allServices = timebankData.getServices();
+                services.clear();
                 for (Service s : allServices) {
-                    if (s.getServiceOwnerId().equals(userId)) {
+                    if (s.getServiceOwnerId().equals(userId) && s.getClientId().isEmpty()) {
                         if (!services.contains(s))
                             services.add(s);
                     }
                 }
-                adapter = new TimebankServicesAdapter(services, getContext());
+                adapter = new TimebankServicesAdapter(services, getContext(), TimebankServicesAdapter.MY_SERVICES);
                 recyclerView.setAdapter(adapter);
+                if(services.isEmpty())
+                    emptyListTextView.setVisibility(View.VISIBLE);
+                else
+                    emptyListTextView.setVisibility(View.INVISIBLE);
             }
         });
     }

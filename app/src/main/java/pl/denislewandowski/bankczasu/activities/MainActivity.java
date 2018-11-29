@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        repository.setUserImage(userImage);
+        repository.setCurrentUserImage(userImage);
         repository.setUserName(userNameTextView);
         FirebaseUser user = mAuth.getCurrentUser();
         userNameTextView.setText(user.getDisplayName());

@@ -23,7 +23,7 @@
         android:background="@drawable/message_background_left"
         android:text="hello"
         android:layout_below="@id/message_author_name"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="90dp"
         android:layout_toEndOf="@id/user_image_message"
         android:layout_marginStart="8dp"
         android:padding="8dp"

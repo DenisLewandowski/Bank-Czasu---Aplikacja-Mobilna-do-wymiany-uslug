@@ -92,4 +92,7 @@
     <string name="join_to_timbank_message">Dołącz do banku czasu, aby korzystać z chatu</string>
     <string name="type_message">Napisz wiadomość...</string>
     <string name="group_chat">Chat grupowy</string>
+    <string name="empty_screen_services">Nie ma żadnych wystawionych usług</string>
+    <string name="empty_screen_myservices">Nie wystawiłeś jeszcze żadnej usługi</string>
+    <string name="empty_screen_todo">Nie masz aktualnie usług do wykonania</string>
 </resources>

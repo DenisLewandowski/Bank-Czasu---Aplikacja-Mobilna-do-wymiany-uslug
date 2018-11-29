@@ -19,11 +19,13 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import pl.denislewandowski.bankczasu.R;
 import pl.denislewandowski.bankczasu.RecyclerItemTouchHelper;
@@ -37,29 +39,26 @@ import pl.denislewandowski.bankczasu.dialogs.ReturnCurrencyBackDialogFragment;
 public class ServicesToDoFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private RecyclerView recyclerView;
     private List<Service> services;
+    private TextView emptyScreenTextView;
     private ContentLoadingProgressBar progressBar;
     private ServicesToDoAdapter adapter;
     private String currentUserId;
-    private String timebankId;
-    private CoordinatorLayout coordinatorLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        timebankId = sharedPreferences.getString("CURRENT_TIMEBANK", "null");
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.services_to_do);
-        recyclerView = getView().findViewById(R.id.recycler_view_to_do);
+        Objects.requireNonNull(getActivity()).setTitle(R.string.services_to_do);
+        recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.recycler_view_to_do);
         progressBar = getView().findViewById(R.id.progress_bar);
-        coordinatorLayout = getActivity().findViewById(R.id.coordinator_layout);
+        emptyScreenTextView = getView().findViewById(R.id.empty_view);
 
         services = new ArrayList<>();
 
@@ -89,6 +88,11 @@ public class ServicesToDoFragment extends Fragment implements RecyclerItemTouchH
                 progressBar.hide();
                 adapter = new ServicesToDoAdapter(services, getContext());
                 recyclerView.setAdapter(adapter);
+
+                if(services.isEmpty())
+                    emptyScreenTextView.setVisibility(View.VISIBLE);
+                else
+                    emptyScreenTextView.setVisibility(View.INVISIBLE);
             }
         });
 
